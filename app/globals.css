@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  background: transparent;
+}
+
+/* Snow effect adapted for your background */
+.snow, .snow:before, .snow:after {
+  position: absolute;
+  top: -600px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.8) 50%, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.7) 50%, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.5) 50%, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.8) 50%, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 190px 70px, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 240px 40px, rgba(255,255,255,0.7) 50%, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 280px 80px, rgba(255,255,255,0.5) 50%, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 320px 30px, rgba(255,255,255,0.8) 50%, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 360px 70px, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 400px 40px, rgba(255,255,255,0.7) 50%, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 440px 80px, rgba(255,255,255,0.5) 50%, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 480px 30px, rgba(255,255,255,0.8) 50%, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 520px 70px, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 560px 40px, rgba(255,255,255,0.7) 50%, rgba(0,0,0,0));
+  background-size: 600px 600px;
+  animation: snow 3s linear infinite;
+  content: "";
+  pointer-events: none;
+}
+
+.snow:after {
+  margin-left: -200px;
+  opacity: 0.4;
+  animation-duration: 6s;
+  animation-direction: reverse;
+  filter: blur(3px);
+}
+
+.snow:before {
+  animation-duration: 9s;
+  animation-direction: reverse;
+  margin-left: -300px;
+  opacity: 0.65;
+  filter: blur(1.5px);
+}
+
+@keyframes snow {
+  to {
+    transform: translateY(600px);
+  }
+}
