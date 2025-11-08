@@ -1,52 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
-
-type DoorProps = {
-  n: number;
-  variant?: "green" | "trunk" | "star";
-  isOpen?: boolean;
-  onClick?: () => void;
-};
-
-const Door: React.FC<DoorProps> = ({ n, variant = "green", isOpen = false, onClick }) => {
-  const base = `
-    relative flex items-center justify-center select-none 
-    w-[80px] h-[80px] rounded-lg cursor-pointer transition-all duration-300 hover:scale-105
-  `;
-
-  const green = "bg-[radial-gradient(circle_at_50%_40%,#1EDB25_0%,#27862A_100%)]";
-  const trunk = "bg-[radial-gradient(circle_at_50%_40%,#B78383_0%,#6A4343_100%)]";
-  const star = "bg-[radial-gradient(circle_at_50%_40%,#ffed4e_0%,#ffd700_100%)]";
-
-  const variantClasses = variant === "green" ? green : variant === "trunk" ? trunk : star;
-
-  return (
-    <div className={`${base} ${variantClasses}`} onClick={onClick}>
-      <span className="text-center text-sm font-bold text-black">
-        {variant === "star" ? "" : `${n}`}
-      </span>
-    </div>
-  );
-};
+import React from "react";
+import { useAdventCalendar } from "@/hooks/useAdventCalendar";
+import Door from "@/components/Door";
+import Link from "next/link";
 
 const Row: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = "" }) => (
   <div className={`flex items-center justify-center gap-4 ${className}`}>{children}</div>
 );
 
 export default function AdventTree() {
-  const [openDoors, setOpenDoors] = useState<Set<number>>(new Set());
+  const { toggleDoor, isDoorOpen, getDoorVariant } = useAdventCalendar();
 
   const handleDoorClick = (doorNumber: number) => {
-    setOpenDoors(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(doorNumber)) {
-        newSet.delete(doorNumber);
-      } else {
-        newSet.add(doorNumber);
-      }
-      return newSet;
-    });
+    // Navigate to door page instead of just toggling
+    window.location.href = `/door/${doorNumber}`;
   };
 
   return (
@@ -56,17 +24,11 @@ export default function AdventTree() {
 
       <div className="relative w-full h-screen flex flex-col items-center justify-center px-4 py-8">
 
-        {/* Headings */}
-        <div className="flex items-center justify-between w-full max-w-6xl px-16 md:px-24 mb-8">
-          {/* Left side text */}
-          <h1 className="font-festive text-2xl md:text-4xl leading-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] text-right" style={{color: '#F9DADA'}}>
-            DET BLIR JUL I ÅR IGEN
-          </h1>
-          
-          {/* Right side text */}
-          <h2 className="font-festive text-2xl md:text-4xl leading-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] text-left" style={{color: '#F9DADA'}}>
+        {/* Heading */}
+        <div className="flex items-center justify-center w-full mb-8">
+          <h1 className="font-festive text-2xl md:text-4xl leading-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] text-center" style={{color: '#F9DADA'}}>
             JULKALENDER 2025
-          </h2>
+          </h1>
         </div>
 
 
@@ -77,55 +39,175 @@ export default function AdventTree() {
           
           {/* Top layer - 1 door */}
           <Row>
-            <Door n={24} isOpen={openDoors.has(24)} onClick={() => handleDoorClick(24)} />
+            <Door 
+              id={24} 
+              variant={getDoorVariant(24)} 
+              isOpen={isDoorOpen(24)} 
+              onClick={() => handleDoorClick(24)} 
+            />
           </Row>
 
           {/* Second layer - 2 doors */}
           <Row>
-            <Door n={22} isOpen={openDoors.has(22)} onClick={() => handleDoorClick(22)} />
-            <Door n={23} isOpen={openDoors.has(23)} onClick={() => handleDoorClick(23)} />
+            <Door 
+              id={22} 
+              variant={getDoorVariant(22)} 
+              isOpen={isDoorOpen(22)} 
+              onClick={() => handleDoorClick(22)} 
+            />
+            <Door 
+              id={23} 
+              variant={getDoorVariant(23)} 
+              isOpen={isDoorOpen(23)} 
+              onClick={() => handleDoorClick(23)} 
+            />
           </Row>
 
           {/* Third layer - 3 doors */}
           <Row>
-            <Door n={19} isOpen={openDoors.has(19)} onClick={() => handleDoorClick(19)} />
-            <Door n={20} isOpen={openDoors.has(20)} onClick={() => handleDoorClick(20)} />
-            <Door n={21} isOpen={openDoors.has(21)} onClick={() => handleDoorClick(21)} />
+            <Door 
+              id={19} 
+              variant={getDoorVariant(19)} 
+              isOpen={isDoorOpen(19)} 
+              onClick={() => handleDoorClick(19)} 
+            />
+            <Door 
+              id={20} 
+              variant={getDoorVariant(20)} 
+              isOpen={isDoorOpen(20)} 
+              onClick={() => handleDoorClick(20)} 
+            />
+            <Door 
+              id={21} 
+              variant={getDoorVariant(21)} 
+              isOpen={isDoorOpen(21)} 
+              onClick={() => handleDoorClick(21)} 
+            />
           </Row>
 
           {/* Fourth layer - 4 doors */}
           <Row>
-            <Door n={15} isOpen={openDoors.has(15)} onClick={() => handleDoorClick(15)} />
-            <Door n={16} isOpen={openDoors.has(16)} onClick={() => handleDoorClick(16)} />
-            <Door n={17} isOpen={openDoors.has(17)} onClick={() => handleDoorClick(17)} />
-            <Door n={18} isOpen={openDoors.has(18)} onClick={() => handleDoorClick(18)} />
+            <Door 
+              id={15} 
+              variant={getDoorVariant(15)} 
+              isOpen={isDoorOpen(15)} 
+              onClick={() => handleDoorClick(15)} 
+            />
+            <Door 
+              id={16} 
+              variant={getDoorVariant(16)} 
+              isOpen={isDoorOpen(16)} 
+              onClick={() => handleDoorClick(16)} 
+            />
+            <Door 
+              id={17} 
+              variant={getDoorVariant(17)} 
+              isOpen={isDoorOpen(17)} 
+              onClick={() => handleDoorClick(17)} 
+            />
+            <Door 
+              id={18} 
+              variant={getDoorVariant(18)} 
+              isOpen={isDoorOpen(18)} 
+              onClick={() => handleDoorClick(18)} 
+            />
           </Row>
 
           {/* Fifth layer - 5 doors */}
           <Row>
-            <Door n={10} isOpen={openDoors.has(10)} onClick={() => handleDoorClick(10)} />
-            <Door n={11} isOpen={openDoors.has(11)} onClick={() => handleDoorClick(11)} />
-            <Door n={12} isOpen={openDoors.has(12)} onClick={() => handleDoorClick(12)} />
-            <Door n={13} isOpen={openDoors.has(13)} onClick={() => handleDoorClick(13)} />
-            <Door n={14} isOpen={openDoors.has(14)} onClick={() => handleDoorClick(14)} />
+            <Door 
+              id={10} 
+              variant={getDoorVariant(10)} 
+              isOpen={isDoorOpen(10)} 
+              onClick={() => handleDoorClick(10)} 
+            />
+            <Door 
+              id={11} 
+              variant={getDoorVariant(11)} 
+              isOpen={isDoorOpen(11)} 
+              onClick={() => handleDoorClick(11)} 
+            />
+            <Door 
+              id={12} 
+              variant={getDoorVariant(12)} 
+              isOpen={isDoorOpen(12)} 
+              onClick={() => handleDoorClick(12)} 
+            />
+            <Door 
+              id={13} 
+              variant={getDoorVariant(13)} 
+              isOpen={isDoorOpen(13)} 
+              onClick={() => handleDoorClick(13)} 
+            />
+            <Door 
+              id={14} 
+              variant={getDoorVariant(14)} 
+              isOpen={isDoorOpen(14)} 
+              onClick={() => handleDoorClick(14)} 
+            />
           </Row>
 
           {/* Sixth layer - 6 doors */}
           <Row>
-            <Door n={4} isOpen={openDoors.has(4)} onClick={() => handleDoorClick(4)} />
-            <Door n={5} isOpen={openDoors.has(5)} onClick={() => handleDoorClick(5)} />
-            <Door n={6} isOpen={openDoors.has(6)} onClick={() => handleDoorClick(6)} />
-            <Door n={7} isOpen={openDoors.has(7)} onClick={() => handleDoorClick(7)} />
-            <Door n={8} isOpen={openDoors.has(8)} onClick={() => handleDoorClick(8)} />
-            <Door n={9} isOpen={openDoors.has(9)} onClick={() => handleDoorClick(9)} />
+            <Door 
+              id={4} 
+              variant={getDoorVariant(4)} 
+              isOpen={isDoorOpen(4)} 
+              onClick={() => handleDoorClick(4)} 
+            />
+            <Door 
+              id={5} 
+              variant={getDoorVariant(5)} 
+              isOpen={isDoorOpen(5)} 
+              onClick={() => handleDoorClick(5)} 
+            />
+            <Door 
+              id={6} 
+              variant={getDoorVariant(6)} 
+              isOpen={isDoorOpen(6)} 
+              onClick={() => handleDoorClick(6)} 
+            />
+            <Door 
+              id={7} 
+              variant={getDoorVariant(7)} 
+              isOpen={isDoorOpen(7)} 
+              onClick={() => handleDoorClick(7)} 
+            />
+            <Door 
+              id={8} 
+              variant={getDoorVariant(8)} 
+              isOpen={isDoorOpen(8)} 
+              onClick={() => handleDoorClick(8)} 
+            />
+            <Door 
+              id={9} 
+              variant={getDoorVariant(9)} 
+              isOpen={isDoorOpen(9)} 
+              onClick={() => handleDoorClick(9)} 
+            />
           </Row>
 
           {/* Trunk - 3 doors */}
           <div className="mt-4">
             <Row>
-              <Door n={1} variant="trunk" isOpen={openDoors.has(1)} onClick={() => handleDoorClick(1)} />
-              <Door n={2} variant="trunk" isOpen={openDoors.has(2)} onClick={() => handleDoorClick(2)} />
-              <Door n={3} variant="trunk" isOpen={openDoors.has(3)} onClick={() => handleDoorClick(3)} />
+              <Door 
+                id={1} 
+                variant={getDoorVariant(1)} 
+                isOpen={isDoorOpen(1)} 
+                onClick={() => handleDoorClick(1)} 
+              />
+              <Door 
+                id={2} 
+                variant={getDoorVariant(2)} 
+                isOpen={isDoorOpen(2)} 
+                onClick={() => handleDoorClick(2)} 
+              />
+              <Door 
+                id={3} 
+                variant={getDoorVariant(3)} 
+                isOpen={isDoorOpen(3)} 
+                onClick={() => handleDoorClick(3)} 
+              />
             </Row>
           </div>
         </section>
