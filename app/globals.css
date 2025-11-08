@@ -1,72 +1,90 @@
-@import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Reset & layout base */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  background-color: #17152d; /* fallback behind gradient */
 }
 
+/* Optional body defaults */
 body {
-  background: transparent;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Snow effect adapted for your background */
-.snow, .snow:before, .snow:after {
-  position: absolute;
-  top: -600px;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-image: 
-    radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.8) 50%, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.7) 50%, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.5) 50%, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.8) 50%, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 190px 70px, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 240px 40px, rgba(255,255,255,0.7) 50%, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 280px 80px, rgba(255,255,255,0.5) 50%, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 320px 30px, rgba(255,255,255,0.8) 50%, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 360px 70px, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 400px 40px, rgba(255,255,255,0.7) 50%, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 440px 80px, rgba(255,255,255,0.5) 50%, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 480px 30px, rgba(255,255,255,0.8) 50%, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 520px 70px, rgba(255,255,255,0.6) 50%, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 560px 40px, rgba(255,255,255,0.7) 50%, rgba(0,0,0,0));
-  background-size: 600px 600px;
-  animation: snow 3s linear infinite;
-  content: "";
+/* ❄️ SNOW overlay (fixed, animated downward) */
+.snow {
+  position: fixed;
+  inset: 0;
   pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
 }
 
-.snow:after {
-  margin-left: -200px;
-  opacity: 0.4;
-  animation-duration: 6s;
-  animation-direction: reverse;
-  filter: blur(3px);
+.snow::before,
+.snow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.8) 50%, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.6) 50%, transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.7) 50%, transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.5) 50%, transparent),
+    radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.8) 50%, transparent),
+    radial-gradient(1px 1px at 190px 70px, rgba(255,255,255,0.6) 50%, transparent),
+    radial-gradient(2px 2px at 240px 40px, rgba(255,255,255,0.7) 50%, transparent),
+    radial-gradient(1px 1px at 280px 80px, rgba(255,255,255,0.5) 50%, transparent),
+    radial-gradient(2px 2px at 320px 30px, rgba(255,255,255,0.8) 50%, transparent),
+    radial-gradient(1px 1px at 360px 70px, rgba(255,255,255,0.6) 50%, transparent),
+    radial-gradient(2px 2px at 400px 40px, rgba(255,255,255,0.7) 50%, transparent),
+    radial-gradient(1px 1px at 440px 80px, rgba(255,255,255,0.5) 50%, transparent),
+    radial-gradient(2px 2px at 480px 30px, rgba(255,255,255,0.8) 50%, transparent),
+    radial-gradient(1px 1px at 520px 70px, rgba(255,255,255,0.6) 50%, transparent),
+    radial-gradient(2px 2px at 560px 40px, rgba(255,255,255,0.7) 50%, transparent);
+  background-size: 600px 600px;
+  animation: snowFall 12s linear infinite;
 }
 
-.snow:before {
-  animation-duration: 9s;
-  animation-direction: reverse;
-  margin-left: -300px;
-  opacity: 0.65;
-  filter: blur(1.5px);
+.snow::after {
+  opacity: 0.6;
+  animation-duration: 15s;
+  animation-direction: normal;
+  filter: blur(2px);
 }
 
-@keyframes snow {
+.snow::before {
+  opacity: 0.8;
+  animation-duration: 20s;
+  animation-direction: normal;
+  filter: blur(1px);
+}
+
+/* Falling animation (downward) */
+@keyframes snowFall {
+  from {
+    transform: translateY(-600px);
+  }
   to {
     transform: translateY(600px);
   }
+}
+
+/* Optional festive font utility */
+.font-festive {
+  font-family: "Mountains of Christmas", cursive;
 }

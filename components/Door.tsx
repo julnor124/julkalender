@@ -12,7 +12,7 @@ export interface DoorProps {
 const Door: React.FC<DoorProps> = ({ id, variant, isOpen, onClick }) => {
   const baseClasses = `
     relative flex items-center justify-center select-none 
-    w-[80px] h-[80px] rounded-lg cursor-pointer transition-all duration-300 hover:scale-105
+    rounded-lg cursor-pointer transition-all duration-300 hover:scale-105
   `;
 
   const getVariantClasses = () => {
@@ -25,6 +25,10 @@ const Door: React.FC<DoorProps> = ({ id, variant, isOpen, onClick }) => {
   return (
     <div 
       className={`${baseClasses} ${getVariantClasses()}`} 
+      style={{
+        width: "var(--door-size, 80px)",
+        height: "var(--door-size, 80px)",
+      }}
       onClick={onClick}
       role="button"
       tabIndex={0}
@@ -35,7 +39,10 @@ const Door: React.FC<DoorProps> = ({ id, variant, isOpen, onClick }) => {
         }
       }}
     >
-      <span className="text-center text-sm font-bold text-black">
+      <span
+        className="text-center font-bold text-black"
+        style={{ fontSize: "calc(var(--door-size, 80px) * 0.3)" }}
+      >
         {id}
       </span>
     </div>
