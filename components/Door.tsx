@@ -1,15 +1,14 @@
 "use client";
 
-import React from 'react';
+import type { FC } from "react";
 
 export interface DoorProps {
   id: number;
-  variant: 'green' | 'trunk';
-  isOpen: boolean;
+  variant: "green" | "trunk";
   onClick: () => void;
 }
 
-const Door: React.FC<DoorProps> = ({ id, variant, isOpen, onClick }) => {
+const Door: FC<DoorProps> = ({ id, variant, onClick }) => {
   const baseClasses = `
     relative flex items-center justify-center select-none 
     rounded-lg cursor-pointer transition-all duration-300 hover:scale-105

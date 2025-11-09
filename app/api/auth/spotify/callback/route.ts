@@ -6,7 +6,7 @@ import {
   getVerifierFromCookies,
   setTokenCookie,
   spotifyCookieNames,
-} from "@/lib/spotifyAuth";
+} from "@/services/spotifyAuthService";
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);

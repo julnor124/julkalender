@@ -4,7 +4,7 @@ import {
   clearAuthCookies,
   getValidAccessToken,
   setTokenCookie,
-} from "@/lib/spotifyAuth";
+} from "@/services/spotifyAuthService";
 
 export async function GET(request: NextRequest) {
   try {
@@ -31,4 +31,5 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "server_error" }, { status: 500 });
   }
 }
+
 

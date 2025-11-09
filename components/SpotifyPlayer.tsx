@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 declare global {
   interface Window {
@@ -171,4 +171,5 @@ async function fetchAccessToken(): Promise<string> {
   const data = await response.json();
   return data.token as string;
 }
+
 

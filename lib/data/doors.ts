@@ -7,7 +7,7 @@ export interface DoorData {
 export const doorsData: DoorData[] = [
   {
     id: 1,
-    title: "Första december",
+    title: "WORDLE",
     content: "Välkommen till julkalendern! Här börjar den magiska resan mot jul."
   },
   {

@@ -6,7 +6,7 @@ import {
   setStateCookie,
   setVerifierCookie,
   spotifyScopes,
-} from "@/lib/spotifyAuth";
+} from "@/services/spotifyAuthService";
 
 export async function GET() {
   try {
@@ -42,4 +42,5 @@ export async function GET() {
     );
   }
 }
+
 
