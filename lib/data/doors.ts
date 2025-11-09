@@ -17,28 +17,29 @@ export const doorsData: DoorData[] = [
   },
   {
     id: 3,
-    title: "Adventsljus",
-    content: "Det första ljuset tänds idag. Ljuset växer för varje dag som går."
+    title: "Pixelstjärnan",
+    content:
+      "Den pixliga siluetten hör hemma på scen. Kan du lista ut vem det är innan bilden avslöjas?"
   },
   {
     id: 4,
-    title: "Pepparkakor",
-    content: "Idag bakar vi pepparkakor! Doften av kanel och ingefära fyller huset."
+    title: "Connections",
+    content: "Fyra grupper gömmer sig bland sexton ord. Kan du hitta alla innan gissningarna tar slut?"
   },
   {
     id: 5,
-    title: "Tomten kommer",
-    content: "Tomten har börjat sin resa från Nordpolen. Han har mycket att göra!"
+    title: "Heardle",
+    content: "Gissa låten på sex försök – varje skip avslöjar lite mer av introt."
   },
   {
     id: 6,
-    title: "Julgranen",
-    content: "Idag väljer vi ut den perfekta granen. Vilken blir vår favorit?"
+    title: "På spåret",
+    content: "Fem ledtrådar, sex försök. Dra i nödbromsen när du vet vilken stad vi ska till!"
   },
   {
     id: 7,
-    title: "Julstjärna",
-    content: "Stjärnan på toppen av granen lyser klart. Den visar vägen hem."
+    title: "Rebus",
+    content: "Gissa adventsuttrycket genom att tolka emojirebusen."
   },
   {
     id: 8,
@@ -62,8 +63,8 @@ export const doorsData: DoorData[] = [
   },
   {
     id: 12,
-    title: "Lucia",
-    content: "Lucia kommer med ljus i mörkret. Hon välsignar oss alla."
+    title: "Musikfredag",
+    content: "Gissa vilken ikonisk låt som gömmer sig bakom luckan – varje skip avslöjar mer av introt."
   },
   {
     id: 13,
@@ -97,8 +98,8 @@ export const doorsData: DoorData[] = [
   },
   {
     id: 19,
-    title: "Tomtens verkstad",
-    content: "Tomten arbetar hårt i sin verkstad. Alla leksaker måste bli klara."
+    title: "Musikfredag",
+    content: "Fredag igen! Nynna med, skippa för mer och försök gissa låten innan refrängen."
   },
   {
     id: 20,

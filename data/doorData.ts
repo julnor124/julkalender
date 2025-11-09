@@ -105,48 +105,98 @@ export const doorData: DoorModel[] = [
   },
   {
     id: 3,
-    title: "Adventsljus",
+    title: "Pixelstjärnan",
     description:
-      "Det första ljuset tänds idag. Ljuset växer för varje dag som går.",
+      "Den pixliga siluetten hör hemma på scen. Avslöja vem det är innan gissningarna tar slut!",
     password: "test",
-    gameSlug: "game3",
-    gameType: "content",
+    gameSlug: "pixel",
+    gameType: "pixel",
   },
   {
     id: 4,
-    title: "Pepparkakor",
+    title: "LUCKA 4: Connections",
     description:
-      "Idag bakar vi pepparkakor! Doften av kanel och ingefära fyller huset.",
+      "Hitta fyra grupper med fyra ord vardera. Du har fyra gissningar – men om du är nära får du höra det!",
     password: "test",
-    gameSlug: "game4",
-    gameType: "content",
+    gameSlug: "connections",
+    gameType: "connections",
   },
   {
     id: 5,
-    title: "Tomten kommer",
+    title: "LUCKA 5: MUSIKFREDAG",
     description:
-      "Tomten har börjat sin resa från Nordpolen. Han har mycket att göra!",
+      "Lyssna på några sekunder i taget och gissa låten. Skippa för att höra mer – men du får bara sex försök!",
     password: "test",
-    gameSlug: "game5",
-    gameType: "content",
+    gameSlug: "heardle",
+    gameType: "heardle",
+    heardleConfig: {
+      audioSrc: "/audio/pokerface.mp4",
+      revealDurations: [2, 1, 2, 3, 4, 5],
+      solution: "Poker Face",
+      artist: "Lady Gaga",
+      acceptedAnswers: ["Poker Face", "Pokerface"],
+      videoUrl: "https://www.youtube-nocookie.com/embed/bESGLojNYSo?autoplay=1&start=0",
+    },
   },
   {
     id: 6,
-    title: "Julgranen",
+    title: "LUCKA 6: På spåret",
     description:
-      "Idag väljer vi ut den perfekta granen. Vilken blir vår favorit?",
+      "Hoppa på tåget! Läs ledtrådarna, dra i nödbromsen när du vet svaret och se hur många poäng du tar den på.",
     password: "test",
-    gameSlug: "game6",
-    gameType: "content",
+    gameSlug: "pa-sparet",
+    gameType: "on-the-track",
+    onTheTrackConfig: {
+      answer: "Orlando",
+      acceptedAnswers: ["Orlando"],
+      levels: [
+        {
+          points: 10,
+          image: "/images/orl10p.png",
+          clue:
+            "Vi lämnar befäst stad i söder vars initialer initierar även region vars femte stad vi tar sikte på. På vår resa norrut passerar vi strand på strand innan vi når vår kustlösa stad med stor attraktionskraft.",
+        },
+        {
+          points: 8,
+          image: "/images/orl8p.png",
+          clue:
+            "Kunskaper om USA:s 35:e president är meriterande då denna spacade information leder er till grannstaden 8 mil öster om vår orangea stad med stort golfintresse.",
+        },
+        {
+          points: 6,
+          image: "/images/orl6p.png",
+          clue:
+            "Jurassic Park, E.T. och King Kong är universala filmreferenser av helt annan karaktär än alven från Mörkmården men samtliga leder till staden där både Rwanda och Rumänien är centrala begrepp.",
+        },
+        {
+          points: 4,
+          image: "/images/orl4p.png",
+          clue:
+            "Begagnade golfbollar och puch-modell för tankarna till vår stat i sydöst och byter du flankerande a:n mot o:n i blågul flygplats har du landat rätt.",
+        },
+        {
+          points: 2,
+          image: "/images/orl2p.png",
+          clue:
+            "Disney World, SeaWorld och Universal Studios lockar alla turister till denna Floridastad på O.",
+        },
+      ],
+    },
   },
   {
     id: 7,
-    title: "Julstjärna",
+    title: "LUCKA 7: Rebus",
     description:
-      "Stjärnan på toppen av granen lyser klart. Den visar vägen hem.",
+      "Kan du lista ut rebusen?",
     password: "test",
-    gameSlug: "game7",
-    gameType: "content",
+    gameSlug: "rebus",
+    gameType: "rebus",
+    rebusConfig: {
+      prompt:
+        "1️⃣ + 🕯️ + ✝️ + 🕯️ + 🌅",
+      solution: "Första advent",
+      acceptedAnswers: ["Första advent", "Forsta advent", "1:a advent", "Först advent"],
+    },
   },
   {
     id: 8,
@@ -184,11 +234,20 @@ export const doorData: DoorModel[] = [
   },
   {
     id: 12,
-    title: "Lucia",
-    description: "Lucia kommer med ljus i mörkret. Hon välsignar oss alla.",
+    title: "LUCKA 12: Musikfredag",
+    description:
+      "Det är fredag! Lyssna på några sekunder i taget och gissa låten. Skippa för att höra mer – men du får bara sex försök!",
     password: "test",
-    gameSlug: "game12",
-    gameType: "content",
+    gameSlug: "musikafton",
+    gameType: "heardle",
+    heardleConfig: {
+      audioSrc: "/audio/dirtydiana.mp4",
+      revealDurations: [2, 1, 2, 3, 4, 5],
+      solution: "Dirty Diana",
+      artist: "Michael Jackson",
+      acceptedAnswers: ["Dirty Diana"],
+      videoUrl: "https://www.youtube-nocookie.com/embed/yUi_S6YWjZw?autoplay=1&start=0",
+    },
   },
   {
     id: 13,
@@ -241,12 +300,20 @@ export const doorData: DoorModel[] = [
   },
   {
     id: 19,
-    title: "Tomtens verkstad",
+    title: "LUCKA 19: Musikfredag",
     description:
-      "Tomten arbetar hårt i sin verkstad. Alla leksaker måste bli klara.",
+      "Fredagsfeeling igen! Klarar du att gissa låten innan refrängen dyker upp?",
     password: "test",
-    gameSlug: "game19",
-    gameType: "content",
+    gameSlug: "musikfredag",
+    gameType: "heardle",
+    heardleConfig: {
+      audioSrc: "/audio/layallyourloveonme.mp4",
+      revealDurations: [2, 1, 2, 3, 4, 5],
+      solution: "Lay All Your Love on Me",
+      artist: "ABBA",
+      acceptedAnswers: ["Lay All Your Love on Me", "Lay All Your Love On Me"],
+      videoUrl: "https://www.youtube-nocookie.com/embed/ulZQTrV8QlQ?autoplay=1&start=0",
+    },
   },
   {
     id: 20,
