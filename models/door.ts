@@ -6,6 +6,16 @@ export interface DoorTriviaConfig {
   answer: string;
 }
 
+export interface DoorTriviaQuizQuestion {
+  question: string;
+  options: string[];
+  correctOption: number;
+}
+
+export interface DoorTriviaQuizConfig {
+  questions: DoorTriviaQuizQuestion[];
+}
+
 export interface DoorHeardleConfig {
   audioSrc: string;
   revealDurations: number[];
@@ -25,6 +35,7 @@ export interface DoorOnTheTrackConfig {
   levels: DoorOnTheTrackLevel[];
   answer: string;
   acceptedAnswers?: string[];
+  videoUrl?: string;
 }
 
 export interface DoorRebusConfig {
@@ -34,16 +45,36 @@ export interface DoorRebusConfig {
   hint?: string;
 }
 
+export interface DoorFlagGuessConfig {
+  image: string;
+  solution: string;
+  acceptedAnswers?: string[];
+}
+
+export interface DoorConnectionsGroup {
+  id: string;
+  title: string;
+  description: string;
+  words: string[];
+}
+
+export interface DoorConnectionsConfig {
+  groups: DoorConnectionsGroup[];
+}
+
 export type DoorGameType =
   | "content"
   | "wordle"
   | "crossword"
   | "pixel"
+  | "pixel-movie"
   | "connections"
   | "julfraga"
+  | "trivia-quiz"
   | "heardle"
   | "on-the-track"
-  | "rebus";
+  | "rebus"
+  | "flag";
 
 export interface DoorModel {
   id: number;
@@ -55,9 +86,12 @@ export interface DoorModel {
   wordleConfig?: WordleConfig;
   crosswordConfig?: CrosswordConfig;
   triviaConfig?: DoorTriviaConfig;
+  triviaQuizConfig?: DoorTriviaQuizConfig;
   heardleConfig?: DoorHeardleConfig;
   onTheTrackConfig?: DoorOnTheTrackConfig;
   rebusConfig?: DoorRebusConfig;
+  flagGuessConfig?: DoorFlagGuessConfig;
+  connectionsConfig?: DoorConnectionsConfig;
 }
 
 export interface DoorLayoutRow {

@@ -120,6 +120,34 @@ export const doorData: DoorModel[] = [
     password: "test",
     gameSlug: "connections",
     gameType: "connections",
+    connectionsConfig: {
+      groups: [
+        {
+          id: "umea",
+          title: "Kändisar från Umeå",
+          description: "William Spetz · Tove Styrke · Mikael Lustig · Hanna Ljungberg",
+          words: ["William Spetz", "Tove Styrke", "Mikael Lustig", "Hanna Ljungberg"],
+        },
+        {
+          id: "tandettljus",
+          title: "Textrader från ”Tänd ett ljus”",
+          description: "Dom dom dom · Låt aldrig hoppet försvinna · Fred på jorden · Samma himmel",
+          words: ["Dom dom dom", "Låt aldrig hoppet försvinna", "Fred på jorden", "Samma himmel"],
+        },
+        {
+          id: "hatlag",
+          title: "Lag Julia hatar!!!",
+          description: "Guif · Djurgården · Modo · Skellefteå",
+          words: ["Guif", "Djurgården", "Modo", "Skellefteå"],
+        },
+        {
+          id: "favoritlag",
+          title: "Lag Julia gillar <3",
+          description: "Björklöven · Liverpool · Sandvik · Holmsund City",
+          words: ["Björklöven", "Liverpool", "Sandvik", "Holmsund City"],
+        },
+      ],
+    },
   },
   {
     id: 5,
@@ -187,7 +215,7 @@ export const doorData: DoorModel[] = [
     id: 7,
     title: "LUCKA 7: Rebus",
     description:
-      "Kan du lista ut rebusen?",
+      "",
     password: "test",
     gameSlug: "rebus",
     gameType: "rebus",
@@ -200,37 +228,140 @@ export const doorData: DoorModel[] = [
   },
   {
     id: 8,
-    title: "Julklappar",
+    title: "LUCKA 8: Gissa flaggan",
     description:
-      "Det är dags att börja paketera julklappar. Vilken present ska du ge?",
+      "Kan du se vilket land det är på bara en glimt av flaggan? Varje gissning avslöjar lite mer!",
     password: "test",
-    gameSlug: "game8",
-    gameType: "content",
+    gameSlug: "gissa-flaggan",
+    gameType: "flag",
+    flagGuessConfig: {
+      image: "/images/fiji.svg",
+      solution: "Fiji",
+      acceptedAnswers: ["Fiji", "Republic of Fiji", "Fiji Islands"],
+    },
   },
   {
     id: 9,
-    title: "Julsånger",
+    title: "LUCKA 9: På spåret – ARTIST",
     description:
-      "Idag sjunger vi julsånger tillsammans. Vilken är din favorit?",
+      "Följ ledtrådarna och lista ut vilken superstjärna vi är på väg mot!",
     password: "test",
-    gameSlug: "game9",
-    gameType: "content",
+    gameSlug: "pa-sparet-rihanna",
+    gameType: "on-the-track",
+    onTheTrackConfig: {
+      answer: "Rihanna",
+      acceptedAnswers: ["Rihanna", "Robyn Rihanna Fenty", "Robyn Fenty"],
+      videoUrl: "https://www.youtube-nocookie.com/embed/CvBfHwUxHIk?autoplay=1&start=0",
+      levels: [
+        {
+          points: 10,
+          image: "/images/barbados10p.jpg",
+          clue:
+            "Vi söker en person vars första hem ligger öster om Karibien och vars barndomsadress senare blev pilgrimsplats för fans. Personen sjöng tidigt i skolans kör men drömde sig ut mot större scener och när andra byggde sandslott byggde denna ett globalt varumärke.",
+        },
+        {
+          points: 8,
+          image: "/images/superbowl8p.jpg",
+          clue:
+            "Nio nummer-ett-hits på Billboard hittills, och uppträdde på Super Bowl – medan hen visade upp något mer än bara sin röst.",
+        },
+        {
+          points: 6,
+          image: "/images/fenty6p.jpg",
+          clue:
+            "När personen var femton fick hen chansen att sjunga för en amerikansk producent och världen fick snart höra en paraplysång som aldrig tog slut. ☂️ Idag finns även ett skönhetsmärke som revolutionerade branschen.",
+        },
+        {
+          points: 4,
+          image: "/images/diamonds4p.jpg",
+          clue:
+            "Personen sjunger om diamonds, work och att bitch better have my money. Från popprinsessa till modeikon och miljardär, men släpper hellre smink än nya låtar.",
+        },
+        {
+          points: 2,
+          image: "/images/umbrella2p.jpg",
+          clue:
+            "Denna kvinna kommer från Barbados, heter Robyn Fenty, och är världens mest lysande stjärna under paraplyet. ☂️ Vem är vi på väg mot?",
+        },
+      ],
+    },
   },
   {
     id: 10,
-    title: "Andra ljuset",
-    description: "Det andra adventsljuset tänds. Ljuset växer starkare.",
+    title: "LUCKA 10: Quizdag",
+    description:
+      "Idag är det quiiiizzz!!! Vem vinner???",
     password: "test",
-    gameSlug: "game10",
-    gameType: "content",
+    gameSlug: "quizkvall",
+    gameType: "trivia-quiz",
+    triviaQuizConfig: {
+      questions: [
+        {
+          question: "Vilket år invigdes Globen (nu Avicii Arena) i Stockholm?",
+          options: ["1989", "1992", "1986", "1995"],
+          correctOption: 0,
+        },
+        {
+          question: "Vad heter Sveriges största sjö?",
+          options: ["Vänern", "Vättern", "Mälaren", "Hjälmaren"],
+          correctOption: 0,
+        },
+        {
+          question: "Vilket land har flest invånare?",
+          options: ["Kina", "USA", "Indonesien", "Indien"],
+          correctOption: 3,
+        },
+        {
+          question: "Vad heter den ikoniska nattklubben i Berlin?",
+          options: ["Tresor", "KitKatClub", "Watergate", "Berghain"],
+          correctOption: 3,
+        },
+        {
+          question: "Vilka är Nya Zeelands urinvånare?",
+          options: [
+            "Aboriginer",
+            "Māori",
+            "Inuiter",
+            "Zulu",
+          ],
+          correctOption: 1,
+        },
+        {
+          question: "Vilken krydda ger glöggen sin karakteristiska doft tillsammans med kanel?",
+          options: ["Nejlika", "Rosmarin", "Timjan", "Vanilj"],
+          correctOption: 0,
+        },
+        {
+          question: "Vilken är den mest streamade svenskspråkiga låten på Spotify?",
+          options: ["Säg mig- Carola och Zara Larsson", "Svag- Victor Leksell", "Jag Kommer- Veronica Maggio", "Boten Anna- Basshunter"],
+          correctOption: 1,
+        },
+        {
+          question: "Vilken svensk stad kallas ofta för “Lilla London”?",
+          options: ["Malmö", "Göteborg", "Uppsala", "Örebro"],
+          correctOption: 1,
+        },
+        {
+          question: "Vad heter Japans högsta berg?",
+          options: ["Mount Everest", "Mount Fuji", "Mount Takao", "Mount Koya"],
+          correctOption: 1,          
+        },
+        {
+          question: "Vilken planet ligger närmast solen?",
+          options: ["Mars", "Venus", "Jorden", "Merkurius"],
+          correctOption: 3,
+        },
+      ],
+    },
   },
   {
     id: 11,
-    title: "Julbak",
-    description: "Idag bakar vi alla sorters julbak. Doften är fantastisk!",
+    title: "LUCKA 11: Pixlad filmkväll",
+    description:
+      "Linslus i pixlar! Gissa vilken klassisk film som döljer sig bakom rutor som sakta skärps.",
     password: "test",
-    gameSlug: "game11",
-    gameType: "content",
+    gameSlug: "pixlad-film",
+    gameType: "pixel-movie",
   },
   {
     id: 12,
@@ -268,11 +399,49 @@ export const doorData: DoorModel[] = [
   },
   {
     id: 15,
-    title: "Snöbollskrig",
-    description: "Idag har vi snöbollskrig! Vem vinner denna gång?",
+    title: "LUCKA 15: Musikconnections",
+    description:
+      "Hitta grupper av fyra, idag är det musiktema!",
     password: "test",
-    gameSlug: "game15",
-    gameType: "content",
+    gameSlug: "musikconnections",
+    gameType: "connections",
+    connectionsConfig: {
+      groups: [
+        {
+          id: "filmSongs",
+          title: "Låtar som varit med i filmer",
+          description:
+            "Love Me Like You Do (Fifty Shades of Grey) · (I've Had) The Time of My Life (Dirty Dancing) · Never Say Never (Karate Kid) · From Russia with Love (James Bond)",
+          words: [
+            "Love Me Like You Do",
+            "(I've Had) The Time of My Life",
+            "Never Say Never",
+            "From Russia with Love",
+          ],
+        },
+        {
+          id: "animalTitles",
+          title: "Låtar med djur i titeln",
+          description:
+            "Eye of the Tiger (Survivor) · Black Dog (Led Zeppelin) · Buffalo Soldier (Bob Marley & The Wailers) · I Am the Walrus (The Beatles)",
+          words: ["Eye of the Tiger", "Black Dog", "Buffalo Soldier", "I Am the Walrus"],
+        },
+        {
+          id: "debutSingles",
+          title: "Debutsinglar av stora artister",
+          description:
+            "...Baby One More Time (Britney Spears) · Ocean Eyes (Billie Eilish) · One Time (Justin Bieber) · Blinded by the Light (Bruce Springsteen)",
+          words: ["...Baby One More Time", "Ocean Eyes", "One Time", "Blinded by the Light"],
+        },
+        {
+          id: "eurovisionWinners",
+          title: "Eurovisionvinnare",
+          description:
+            "Arcade (Nederländerna 2019) · Wild Dances (Ukraina 2004) · Ne partez pas sans moi (Schweiz 1988) · What's Another Year (Irland 1980)",
+          words: ["Arcade", "Wild Dances", "Ne partez pas sans moi", "What's Another Year"],
+        },
+      ],
+    },
   },
   {
     id: 16,
@@ -302,7 +471,7 @@ export const doorData: DoorModel[] = [
     id: 19,
     title: "LUCKA 19: Musikfredag",
     description:
-      "Fredagsfeeling igen! Klarar du att gissa låten innan refrängen dyker upp?",
+      "Fredagsfeeling igen! Klarar du att gissa låten?",
     password: "test",
     gameSlug: "musikfredag",
     gameType: "heardle",

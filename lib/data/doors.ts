@@ -43,23 +43,27 @@ export const doorsData: DoorData[] = [
   },
   {
     id: 8,
-    title: "Julklappar",
-    content: "Det är dags att börja paketera julklappar. Vilken present ska du ge?"
+    title: "Gissa flaggan",
+    content:
+      "Flaggan är nästan gömd! Varje gissning avslöjar lite mer – kan du pricka Fiji innan allt syns?"
   },
   {
     id: 9,
-    title: "Julsånger",
-    content: "Idag sjunger vi julsånger tillsammans. Vilken är din favorit?"
+    title: "På spåret – Rihanna",
+    content:
+      "Från Barbados sand till Super Bowl-höjder – lista ut vilken superstjärna vi jagar innan tågresan är slut."
   },
   {
     id: 10,
-    title: "Andra ljuset",
-    content: "Det andra adventsljuset tänds. Ljuset växer starkare."
+    title: "Quizkväll",
+    content:
+      "Tio frågor om Sverige, jul och popkultur väntar bakom luckan – hur många klarar du?"
   },
   {
     id: 11,
-    title: "Julbak",
-    content: "Idag bakar vi alla sorters julbak. Doften är fantastisk!"
+    title: "Pixlad filmkväll",
+    content:
+      "Pixlarna avslöjar långsamt en ikonisk filmklassiker. Kan du se vilken det är innan bilden blir skarp?"
   },
   {
     id: 12,
@@ -78,8 +82,9 @@ export const doorsData: DoorData[] = [
   },
   {
     id: 15,
-    title: "Snöbollskrig",
-    content: "Idag har vi snöbollskrig! Vem vinner denna gång?"
+    title: "Musikconnections",
+    content:
+      "Fyra grupper av låtar väntar – kan du koppla ihop filmhits, djurlåtar, debutsinglar och Eurovisionvinnare innan gissningarna tar slut?"
   },
   {
     id: 16,
@@ -99,7 +104,7 @@ export const doorsData: DoorData[] = [
   {
     id: 19,
     title: "Musikfredag",
-    content: "Fredag igen! Nynna med, skippa för mer och försök gissa låten innan refrängen."
+    content: "Fredag igen! Nynna med, skippa för mer och försök gissa låten."
   },
   {
     id: 20,

@@ -67,11 +67,13 @@ export const OnTheTrackGameView = ({ door }: OnTheTrackGameViewProps) => {
   const [guessInput, setGuessInput] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   const gameFinished = levelIndex >= levels.length;
 
   useEffect(() => {
     if (!hasStarted) {
+      setShowVideo(false);
       return;
     }
 
@@ -89,6 +91,16 @@ export const OnTheTrackGameView = ({ door }: OnTheTrackGameViewProps) => {
       }
     }
   }, [hasStarted, config.answer, guessed, levelIndex, levels.length, message]);
+
+  useEffect(() => {
+    if (!hasStarted) {
+      return;
+    }
+
+    if (levelIndex >= levels.length && config.videoUrl) {
+      setShowVideo(true);
+    }
+  }, [hasStarted, levelIndex, levels.length, config.videoUrl]);
 
   useEffect(() => {
     if (!hasStarted || levelIndex >= levels.length) {
@@ -184,6 +196,7 @@ export const OnTheTrackGameView = ({ door }: OnTheTrackGameViewProps) => {
     setShowGuessField(false);
     setGuessInput("");
     setMessage(null);
+    setShowVideo(false);
   };
 
   return (
@@ -222,11 +235,11 @@ export const OnTheTrackGameView = ({ door }: OnTheTrackGameViewProps) => {
                 {currentLevel.points} poäng
               </p>
               <div className="mt-4 flex w-full flex-col items-center gap-4">
-                <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#000]/20">
+                <div className="mx-auto w-full max-w-[220px] aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-[#000]/20">
                   <img
                     src={currentLevel.image}
                     alt={`Ledtråd för ${currentLevel.points} poäng`}
-                    className="h-64 w-full object-contain"
+                    className="h-full w-full object-cover"
                   />
                 </div>
                 <p className="whitespace-pre-line text-base text-[#fdf7f7]/90">
@@ -315,6 +328,22 @@ export const OnTheTrackGameView = ({ door }: OnTheTrackGameViewProps) => {
                 <p className="mt-3 text-sm text-[#ffe89c]/70">
                   Din gissning: {guessed.guess}
                 </p>
+              )}
+
+              {showVideo && config.videoUrl && (
+                <div className="mt-6 w-full">
+                  <div className="mx-auto w-full max-w-4xl rounded-3xl border border-white/10 bg-[#050216]/80 shadow-[0_30px_60px_rgba(12,8,40,0.45)]">
+                    <iframe
+                      src={config.videoUrl}
+                      title="På spåret avslutning"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      frameBorder="0"
+                      className="block w-full"
+                      style={{ aspectRatio: "16 / 9" }}
+                    />
+                  </div>
+                </div>
               )}
             </div>
           )}

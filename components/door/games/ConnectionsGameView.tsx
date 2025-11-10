@@ -1,25 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { DoorModel } from "@/models/door";
-
-interface PuzzleGroup {
-  id: string;
-  title: string;
-  description: string;
-  words: string[];
-}
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { DoorConnectionsGroup, DoorModel } from "@/models/door";
+import PopupMessage from "@/components/ui/PopupMessage";
 
 interface WordState {
   word: string;
   groupId: string;
 }
 
-interface ConnectionsGameViewProps {
-  door: DoorModel;
-}
-
-const puzzleGroups: PuzzleGroup[] = [
+const DEFAULT_GROUPS: DoorConnectionsGroup[] = [
   {
     id: "umea",
     title: "Kändisar från Umeå",
@@ -48,29 +38,74 @@ const puzzleGroups: PuzzleGroup[] = [
 
 const MAX_ERRORS = 4;
 
+interface ConnectionsGameViewProps {
+  door: DoorModel;
+}
+
 export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
-  const allWords = useMemo<WordState[]>(() => {
+  const groupsFromDoor = door.connectionsConfig?.groups ?? [];
+
+  const puzzleGroups = useMemo<DoorConnectionsGroup[]>(() => {
+    if (groupsFromDoor.length > 0) {
+      return groupsFromDoor;
+    }
+    return DEFAULT_GROUPS;
+  }, [groupsFromDoor]);
+
+  const baseWords = useMemo<WordState[]>(() => {
     return puzzleGroups.flatMap((group) =>
       group.words.map((word) => ({
         word,
         groupId: group.id,
       }))
     );
+  }, [puzzleGroups]);
+
+  const shuffleWords = useCallback((words: WordState[]) => {
+    const copy = [...words];
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
   }, []);
 
-  const [availableWords, setAvailableWords] = useState<WordState[]>(allWords);
+  const [availableWords, setAvailableWords] = useState<WordState[]>(baseWords);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
-  const [solvedGroups, setSolvedGroups] = useState<PuzzleGroup[]>([]);
+  const [solvedGroups, setSolvedGroups] = useState<DoorConnectionsGroup[]>([]);
   const [message, setMessage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [messageTone, setMessageTone] = useState<"status" | "error">("status");
+  const [hintMessage, setHintMessage] = useState<string | null>(null);
   const [remainingErrors, setRemainingErrors] = useState<number>(MAX_ERRORS);
+  const [shakeSelection, setShakeSelection] = useState(false);
+  useEffect(() => {
+    if (!hintMessage) {
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      setHintMessage(null);
+    }, 3000);
+    return () => window.clearTimeout(timer);
+  }, [hintMessage]);
+
+  useEffect(() => {
+    setAvailableWords(shuffleWords(baseWords));
+    setSelectedWords([]);
+    setSolvedGroups([]);
+    setMessage(null);
+    setMessageTone("status");
+    setHintMessage(null);
+    setRemainingErrors(MAX_ERRORS);
+    setShakeSelection(false);
+  }, [baseWords, shuffleWords]);
 
   const handleWordClick = (word: string) => {
     if (message && solvedGroups.length < puzzleGroups.length) {
       setMessage(null);
+      setMessageTone("status");
     }
-    if (errorMessage) {
-      setErrorMessage(null);
+    if (hintMessage) {
+      setHintMessage(null);
     }
     if (selectedWords.includes(word)) {
       setSelectedWords((prev) => prev.filter((item) => item !== word));
@@ -84,66 +119,59 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
   };
 
   const revealRemainingGroups = () => {
-    const unsolvedGroupIds = new Set(
-      solvedGroups.map((group) => group.id)
-    );
-    const remainingGroups = puzzleGroups.filter(
-      (group) => !unsolvedGroupIds.has(group.id)
-    );
-    setSolvedGroups([...solvedGroups, ...remainingGroups]);
+    setSolvedGroups((prev) => {
+      const solvedIds = new Set(prev.map((group) => group.id));
+      const remaining = puzzleGroups.filter((group) => !solvedIds.has(group.id));
+      return [...prev, ...remaining];
+    });
     setAvailableWords([]);
     setSelectedWords([]);
   };
 
   const checkSelection = () => {
     if (selectedWords.length !== 4) {
-      setErrorMessage("Välj fyra ord innan du gissar.");
+      setMessage("Välj fyra ord innan du gissar.");
+      setMessageTone("error");
       return;
     }
 
-    const wordsWithGroups = selectedWords.map((word) =>
-      availableWords.find((entry) => entry.word === word)
-    );
-
-    if (wordsWithGroups.some((entry) => !entry)) {
-      setErrorMessage("Ett av orden kunde inte hittas. Försök igen.");
-      return;
-    }
-
-    const groupCounts = new Map<string, number>();
-    wordsWithGroups.forEach((entry) => {
-      const current = groupCounts.get(entry!.groupId) ?? 0;
-      groupCounts.set(entry!.groupId, current + 1);
+    const counts = puzzleGroups.map((group) => {
+      const count = selectedWords.filter((word) =>
+        group.words.includes(word)
+      ).length;
+      return { group, count };
     });
 
-    const matchedGroupId = Array.from(groupCounts.entries()).find(
-      ([, count]) => count === 4
-    )?.[0];
+    const matched = counts.find(({ count }) => count === 4);
 
-    if (matchedGroupId) {
-      const group = puzzleGroups.find((item) => item.id === matchedGroupId);
-      if (group) {
-        setSolvedGroups((prev) => [...prev, group]);
-        setAvailableWords((prev) =>
-          prev.filter((entry) => entry.groupId !== matchedGroupId)
-        );
-        setSelectedWords([]);
-        setMessage(`Rätt! Grupp: ${group.title}`);
-        if (solvedGroups.length + 1 === puzzleGroups.length) {
-          setMessage("Du löste alla grupper! 🎉");
-        }
+    if (matched) {
+      setSolvedGroups((prev) => [...prev, matched.group]);
+      setAvailableWords((prev) =>
+        prev.filter((entry) => entry.groupId !== matched.group.id)
+      );
+      setSelectedWords([]);
+      setMessage(`Rätt! Grupp: ${matched.group.title}`);
+      setMessageTone("status");
+      if (solvedGroups.length + 1 === puzzleGroups.length) {
+        setMessage("Du löste alla grupper! 🎉");
+        setMessageTone("status");
       }
       return;
     }
 
-    const oneAway = Array.from(groupCounts.entries()).some(
-      ([, count]) => count === 3
-    );
+    const almost = counts.filter(({ count }) => count === 3);
 
-    if (oneAway) {
-      setMessage("One away...");
+    if (almost.length > 0) {
+      const hintText =
+        almost.length === 1
+          ? `One away... du är nära ${almost[0].group.title.toLowerCase()}`
+          : "One away...";
+      setMessage(null);
+      setHintMessage(hintText);
+      setMessageTone("status");
     } else {
       setMessage("Fel grupp!");
+      setMessageTone("error");
     }
 
     const nextErrors = remainingErrors - 1;
@@ -151,20 +179,73 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
 
     if (nextErrors <= 0) {
       setMessage("Inga gissningar kvar! Här är lösningarna.");
+      setMessageTone("status");
       revealRemainingGroups();
+      setShakeSelection(false);
+    } else {
+      setShakeSelection(true);
+      window.setTimeout(() => setShakeSelection(false), 600);
     }
   };
 
   const isGameOver =
     remainingErrors <= 0 || solvedGroups.length === puzzleGroups.length;
 
+  const cellBaseClasses =
+    "min-w-[150px] rounded-xl border px-4 py-[14px] text-center text-sm font-semibold uppercase tracking-wide transition shadow-[0_12px_30px_rgba(13,9,40,0.35)]";
+  const availableButtonClasses =
+    "bg-[#120b36]/90 border-[#46308d]/80 text-[#f8f4ff] hover:border-[#ffe7a7] hover:bg-[#1d1354]/90";
+  const selectedButtonClasses = "bg-[#ffe89c]/95 border-[#ffe89c] text-[#1b0f3d]";
+  const solvedButtonClasses = "bg-[#0a0a2d]/80 border-[#1f124d]/70 text-[#877ad1]/80";
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0b0b33] via-[#1c0d52] to-[#26006f] text-[#fdf7f7] font-festive">
+    <>
+      <style jsx global>{`
+        @keyframes connections-shake {
+          0%,
+          100% {
+            transform: translateX(0);
+          }
+          20%,
+          60% {
+            transform: translateX(-6px);
+          }
+          40%,
+          80% {
+            transform: translateX(6px);
+          }
+        }
+
+        .connections-shake {
+          animation: connections-shake 0.45s ease;
+        }
+
+        @keyframes connections-fade-out {
+          0% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          60% {
+            opacity: 1;
+            transform: scale(1.03);
+          }
+          100% {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+        }
+
+        .animate-connections-fade-out {
+          animation: connections-fade-out 3s ease-in-out forwards;
+        }
+      `}</style>
+      <div className="min-h-screen bg-gradient-to-b from-[#060518] via-[#150b3f] to-[#210d5d] text-[#fdf7f7] font-festive">
       <div className="snow pointer-events-none" />
 
-      <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center px-4 pb-24 pt-16">
-        <header className="mb-10 text-center">
-          <h1 className="text-3xl md:text-4xl text-[#F9DADA] drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)]">
+      <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center px-4 pb-24 pt-16">
+        <header className="mb-12 text-center">
+          <p className="text-xs uppercase tracking-[0.7em] text-[#ffe3b0]/80">Lucka {door.id}</p>
+          <h1 className="mt-3 text-3xl sm:text-4xl text-[#F9DADA] drop-shadow-[0_4px_18px_rgba(0,0,0,0.7)]">
             {door.title}
           </h1>
           <p className="mt-3 text-base md:text-lg text-[#F9DADA]/80 max-w-3xl mx-auto">
@@ -172,10 +253,13 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
           </p>
         </header>
 
-        <section className="flex w-full flex-col items-center gap-8">
-          <div className="flex flex-wrap justify-center gap-3">
+        <section className="flex w-full flex-col items-center gap-10">
+          <div className="grid w-full max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
             {availableWords.map((entry) => {
               const isSelected = selectedWords.includes(entry.word);
+              const isSolved = solvedGroups.some(
+                (group) => group.id === entry.groupId
+              );
               return (
                 <button
                   key={entry.word}
@@ -183,10 +267,13 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
                   onClick={() => handleWordClick(entry.word)}
                   disabled={isGameOver}
                   className={[
-                    "min-w-[140px] rounded-xl border border-white/10 bg-[#160d3d]/80 px-4 py-3 text-center text-sm font-semibold text-[#f8f4ff] shadow-[0_15px_30px_rgba(12,8,40,0.45)] transition",
-                    isSelected
-                      ? "border-[#ffe89c] bg-[#2a1b5f]"
-                      : "hover:border-[#ffe89c]/60 hover:bg-[#211054]",
+                    cellBaseClasses,
+                    isSolved
+                      ? solvedButtonClasses
+                      : isSelected
+                      ? selectedButtonClasses
+                      : availableButtonClasses,
+                    isSelected && shakeSelection ? "connections-shake" : "",
                     isGameOver ? "cursor-not-allowed opacity-60" : "",
                   ].join(" ")}
                 >
@@ -196,17 +283,23 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
             })}
           </div>
 
-          <div className="flex flex-col items-center gap-3 text-sm text-[#F9DADA]/80">
-            <div>Markerade ord: {selectedWords.length} / 4</div>
-            <div>Gissningar kvar: {remainingErrors}</div>
+          <div className="flex w-full max-w-xl flex-col items-center gap-2 rounded-2xl border border-[#362275]/50 bg-[#0d0a2b]/70 px-6 py-4 text-sm text-[#F9DADA]/75">
+            <p>
+              <span className="font-semibold text-[#ffe89c]">Markerade ord:</span>{" "}
+              {selectedWords.length} / 4
+            </p>
+            <p>
+              <span className="font-semibold text-[#ffe89c]">Gissningar kvar:</span>{" "}
+              {remainingErrors}
+            </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               type="button"
               onClick={checkSelection}
               disabled={isGameOver}
-              className="rounded-full bg-[#ffe89c] px-5 py-2 text-sm font-semibold uppercase tracking-wide text-[#1b0f3d] transition hover:bg-[#ffd45c] disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-full bg-[#ffe89c] px-6 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-[#1b0f3d] transition hover:bg-[#ffd45c] disabled:cursor-not-allowed disabled:opacity-60"
             >
               Kontrollera grupp
             </button>
@@ -214,30 +307,43 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
               type="button"
               onClick={resetSelection}
               disabled={selectedWords.length === 0 || isGameOver}
-              className="rounded-full bg-[#ffe89c] px-5 py-2 text-sm font-semibold uppercase tracking-wide text-[#1b0f3d] transition hover:bg-[#ffd45c] disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-full bg-[#ffe89c] px-6 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-[#1b0f3d] transition hover:bg-[#ffd45c] disabled:cursor-not-allowed disabled:opacity-60"
             >
               Avmarkera
             </button>
+            <button
+              type="button"
+              onClick={() => {
+                setAvailableWords(shuffleWords(availableWords));
+                setSelectedWords([]);
+                setShakeSelection(false);
+                setHintMessage(null);
+              }}
+              disabled={isGameOver}
+              className="rounded-full bg-[#ffe89c] px-6 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-[#1b0f3d] transition hover:bg-[#ffd45c] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              Shuffle
+            </button>
           </div>
 
-          {(message || errorMessage) && (
+          {message && (
             <div
               className={[
                 "rounded-xl px-4 py-3 text-center text-sm font-semibold",
-                errorMessage
+                messageTone === "error"
                   ? "bg-rose-500/20 text-rose-200"
                   : "bg-[#ffe89c]/20 text-[#ffe89c]",
               ].join(" ")}
             >
-              {errorMessage ?? message}
+              {message}
             </div>
           )}
 
-          <div className="flex w-full flex-col items-center gap-4">
+          <div className="grid w-full max-w-3xl gap-4 sm:grid-cols-2">
             {solvedGroups.map((group) => (
               <div
                 key={group.id}
-                className="w-full max-w-2xl rounded-2xl border border-white/10 bg-[#0f0a2b]/70 px-6 py-4 text-center text-[#fdf7f7]"
+                className="rounded-2xl border border-[#ffe89c]/40 bg-[#22114b]/70 px-6 py-5 text-center text-[#fdf7f7] shadow-[0_16px_36px_rgba(15,10,50,0.35)]"
               >
                 <h2 className="text-lg font-semibold text-[#ffe89c]">
                   {group.title}
@@ -250,7 +356,14 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
           </div>
         </section>
       </main>
-    </div>
+      </div>
+
+      <PopupMessage
+        text={hintMessage ?? ""}
+        onClose={() => setHintMessage(null)}
+        duration={3000}
+      />
+    </>
   );
 };
 

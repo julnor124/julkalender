@@ -6,11 +6,14 @@ import { DoorContentView } from "@/components/door/DoorContentView";
 import { WordleGameView } from "@/components/door/games/WordleGameView";
 import { CrosswordGameView } from "@/components/door/games/CrosswordGameView";
 import PixelGuessGame from "@/components/door/games/PixelGuessGame";
+import MoviePixelGuessGame from "@/components/door/games/MoviePixelGuessGame";
 import { ConnectionsGameView } from "@/components/door/games/ConnectionsGameView";
 import TriviaGameView from "@/components/door/games/TriviaGameView";
+import TriviaQuizGameView from "@/components/door/games/TriviaQuizGameView";
 import HeardleGameView from "@/components/door/games/HeardleGameView";
 import RebusGameView from "@/components/door/games/RebusGameView";
 import OnTheTrackGameView from "@/components/door/games/OnTheTrackGameView";
+import GuessTheFlagGameView from "@/components/door/games/GuessTheFlagGameView";
 
 interface DoorGameViewProps {
   door: DoorModel;
@@ -29,8 +32,20 @@ export const DoorGameView: FC<DoorGameViewProps> = ({ door }) => {
     return <PixelGuessGame />;
   }
 
+  if (door.gameType === "pixel-movie") {
+    return <MoviePixelGuessGame door={door} />;
+  }
+
+  if (door.gameType === "flag" && door.flagGuessConfig) {
+    return <GuessTheFlagGameView door={door} />;
+  }
+
   if (door.gameType === "connections") {
     return <ConnectionsGameView door={door} />;
+  }
+
+  if (door.gameType === "trivia-quiz" && door.triviaQuizConfig) {
+    return <TriviaQuizGameView door={door} />;
   }
 
   if (door.gameType === "julfraga" && door.triviaConfig) {

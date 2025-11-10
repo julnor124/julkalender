@@ -148,7 +148,6 @@ export const HeardleGameView = ({ door }: HeardleGameViewProps) => {
       playSegment(currentSegment + 1);
     } else {
       setResult("revealed");
-      setMessage(`Svaret är “${solution}” av ${artist}. 🎧`);
       setShowVideo(true);
       stopPlayback();
     }
