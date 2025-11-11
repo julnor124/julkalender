@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 interface PopupMessageProps {
@@ -9,11 +9,26 @@ interface PopupMessageProps {
   onClose?: () => void;
 }
 
-const PopupMessage = ({ text, duration = 3000, onClose }: PopupMessageProps) => {
+const PopupMessage = ({ text, duration = 7000, onClose }: PopupMessageProps) => {
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
+
+  // Skapa / hämta root-elementet på klienten
   useEffect(() => {
-    if (!text) {
-      return;
+    if (typeof window === "undefined") return;
+
+    let root = document.getElementById("popup-message-root");
+    if (!root) {
+      root = document.createElement("div");
+      root.id = "popup-message-root";
+      document.body.appendChild(root);
     }
+
+    setPortalTarget(root);
+  }, []);
+
+  // Auto-stäng popup efter duration
+  useEffect(() => {
+    if (!text) return;
 
     const timer = window.setTimeout(() => {
       onClose?.();
@@ -21,20 +36,6 @@ const PopupMessage = ({ text, duration = 3000, onClose }: PopupMessageProps) => 
 
     return () => window.clearTimeout(timer);
   }, [text, duration, onClose]);
-
-  const portalTarget = useMemo(() => {
-    if (typeof window === "undefined") {
-      return null;
-    }
-    const existing = document.getElementById("popup-message-root");
-    if (existing) {
-      return existing;
-    }
-    const root = document.createElement("div");
-    root.id = "popup-message-root";
-    document.body.appendChild(root);
-    return root;
-  }, []);
 
   if (!text || !portalTarget) {
     return null;
@@ -51,5 +52,3 @@ const PopupMessage = ({ text, duration = 3000, onClose }: PopupMessageProps) => 
 };
 
 export default PopupMessage;
-
-

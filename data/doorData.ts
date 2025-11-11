@@ -116,7 +116,7 @@ export const doorData: DoorModel[] = [
     id: 4,
     title: "LUCKA 4: Connections",
     description:
-      "Hitta fyra grupper med fyra ord vardera. Du har fyra gissningar – men om du är nära får du höra det!",
+      "Hitta fyra grupper med fyra ord vardera. (håll koll längst ner på skärmen, där står det om du är one away",
     password: "test",
     gameSlug: "connections",
     gameType: "connections",
@@ -401,7 +401,7 @@ export const doorData: DoorModel[] = [
     id: 15,
     title: "LUCKA 15: Musikconnections",
     description:
-      "Hitta grupper av fyra, idag är det musiktema!",
+      "Hitta grupper av fyra, idag är det musiktema! (håll koll längst ner på skärmen, där står det om du är one away)",
     password: "test",
     gameSlug: "musikconnections",
     gameType: "connections",
@@ -424,7 +424,7 @@ export const doorData: DoorModel[] = [
           title: "Låtar med djur i titeln",
           description:
             "Eye of the Tiger (Survivor) · Black Dog (Led Zeppelin) · Buffalo Soldier (Bob Marley & The Wailers) · I Am the Walrus (The Beatles)",
-          words: ["Eye of the Tiger", "Black Dog", "Buffalo Soldier", "I Am the Walrus"],
+          words: ["Eye of the", "Black", "Soldier", "I Am the"],
         },
         {
           id: "debutSingles",

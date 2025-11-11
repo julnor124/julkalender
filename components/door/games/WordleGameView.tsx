@@ -85,7 +85,7 @@ export const WordleGameView: FC<WordleGameViewProps> = ({ door }) => {
     if (status === "lost" && door.wordleConfig) {
       return `Ordet var ${door.wordleConfig.solution.toUpperCase()}. Bättre lycka nästa gång!`;
     }
-    return ``;
+    return `Du har ${remainingAttempts} försök kvar.`;
   })();
 
   const tileSize = "clamp(2.6rem, 12vw, 3.6rem)";
