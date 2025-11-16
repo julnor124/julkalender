@@ -40,11 +40,8 @@ interface GuessTheFlagGameViewProps {
 const GuessTheFlagGameView = ({ door }: GuessTheFlagGameViewProps) => {
   const config = door.flagGuessConfig;
 
-  if (!config) {
-    return null;
-  }
-
   const acceptedAnswers = useMemo(() => {
+    if (!config) return [];
     const base = config.acceptedAnswers ?? [];
     const set = new Set<string>(
       [config.solution, ...base]
@@ -52,12 +49,16 @@ const GuessTheFlagGameView = ({ door }: GuessTheFlagGameViewProps) => {
         .filter(Boolean)
     );
     return Array.from(set);
-  }, [config.acceptedAnswers, config.solution]);
+  }, [config?.acceptedAnswers, config?.solution]);
 
   const [entries, setEntries] = useState<GuessEntry[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [status, setStatus] = useState<"playing" | "won" | "lost">("playing");
   const [feedback, setFeedback] = useState<string | null>(null);
+
+  if (!config) {
+    return null;
+  }
 
   const remainingGuesses = Math.max(MAX_GUESSES - entries.length, 0);
 

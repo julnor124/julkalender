@@ -17,14 +17,14 @@ interface EventResult {
 const HistoryGuessGameView = ({ door }: HistoryGuessGameViewProps) => {
   const config = door.historyGuessConfig;
 
-  if (!config || !config.events || config.events.length === 0) {
-    return null;
-  }
-
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
   const [yearGuess, setYearGuess] = useState("");
   const [results, setResults] = useState<EventResult[]>([]);
   const [showAllResults, setShowAllResults] = useState(false);
+
+  if (!config || !config.events || config.events.length === 0) {
+    return null;
+  }
 
   const currentEvent = config.events[currentEventIndex];
   const allEventsCompleted = currentEventIndex >= config.events.length;

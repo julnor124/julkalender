@@ -17,12 +17,7 @@ const OPTION_BASE =
 
 export const TriviaQuizGameView = ({ door }: TriviaQuizGameViewProps) => {
   const config = door.triviaQuizConfig;
-
-  if (!config || config.questions.length === 0) {
-    return null;
-  }
-
-  const totalQuestions = config.questions.length;
+  const totalQuestions = config?.questions?.length || 0;
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -33,11 +28,15 @@ export const TriviaQuizGameView = ({ door }: TriviaQuizGameViewProps) => {
   const [showFeedback, setShowFeedback] = useState(false);
   const [finished, setFinished] = useState(false);
 
-  const currentQuestion = config.questions[currentIndex];
+  const currentQuestion = config?.questions?.[currentIndex];
   const progressLabel = useMemo(
     () => `${currentIndex + 1}/${totalQuestions}`,
     [currentIndex, totalQuestions]
   );
+
+  if (!config || config.questions.length === 0) {
+    return null;
+  }
 
   const handleSelect = (index: number) => {
     if (showFeedback) {
@@ -47,7 +46,7 @@ export const TriviaQuizGameView = ({ door }: TriviaQuizGameViewProps) => {
   };
 
   const handleSubmit = () => {
-    if (selectedOption === null || showFeedback) {
+    if (selectedOption === null || showFeedback || !currentQuestion) {
       return;
     }
 
@@ -89,6 +88,10 @@ export const TriviaQuizGameView = ({ door }: TriviaQuizGameViewProps) => {
     setShowFeedback(false);
     setFinished(false);
   };
+
+  if (!currentQuestion) {
+    return null;
+  }
 
   const correctOptionText = currentQuestion.options[currentQuestion.correctOption];
 

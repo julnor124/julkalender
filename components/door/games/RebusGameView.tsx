@@ -12,14 +12,11 @@ const normalise = (value: string) =>
   value.toLowerCase().replace(/\s+/g, " ").trim();
 
 export const RebusGameView = ({ door, onSolved }: RebusGameViewProps) => {
-  if (!door.rebusConfig) {
-    return null;
-  }
-
-  const { prompt, solution, acceptedAnswers = [], hint } = door.rebusConfig;
+  const { prompt, solution, acceptedAnswers = [], hint } = door.rebusConfig || {};
 
   const allValidAnswers = useMemo(() => {
-    const base = acceptedAnswers.map(normalise);
+    if (!solution) return [];
+    const base = (acceptedAnswers || []).map(normalise);
     const sol = normalise(solution);
     return base.includes(sol) ? base : [...base, sol];
   }, [acceptedAnswers, solution]);
@@ -31,7 +28,7 @@ export const RebusGameView = ({ door, onSolved }: RebusGameViewProps) => {
   const handleSubmit = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (revealed) {
+      if (revealed || !solution) {
         return;
       }
       const candidate = normalise(guess);
@@ -40,20 +37,25 @@ export const RebusGameView = ({ door, onSolved }: RebusGameViewProps) => {
         return;
       }
       if (allValidAnswers.includes(candidate)) {
-        setMessage(`Woho! Rätt svar är “${solution}”. 🌟`);
+        setMessage(`Woho! Rätt svar är "${solution}". 🌟`);
         onSolved?.();
       } else {
         setMessage("Nja, inte riktigt. Testa igen eller visa svaret!");
       }
     },
-    [allValidAnswers, guess, revealed, solution]
+    [allValidAnswers, guess, revealed, solution, onSolved]
   );
 
   const handleReveal = useCallback(() => {
+    if (!solution) return;
     setRevealed(true);
-    setMessage(`Svaret på rebusen är “${solution}”. 🎉`);
+    setMessage(`Svaret på rebusen är "${solution}". 🎉`);
     onSolved?.();
   }, [solution, onSolved]);
+
+  if (!door.rebusConfig) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a0924] via-[#19104a] to-[#2d0f62] text-[#fdf7f7] font-festive">

@@ -39,20 +39,18 @@ const isCorrectGuess = (
 };
 
 export const HeardleGameView = ({ door, onSolved }: HeardleGameViewProps) => {
-  if (!door.heardleConfig) {
-    return null;
-  }
-
+  const config = door.heardleConfig;
   const {
     audioSrc,
-    revealDurations,
-    solution,
-    artist,
-    acceptedAnswers,
+    revealDurations = [],
+    solution = "",
+    artist = "",
+    acceptedAnswers = [],
     videoUrl,
-  } = door.heardleConfig;
+  } = config || {};
 
   const validAnswers = useMemo(() => {
+    if (!solution) return [];
     const baseAnswers = acceptedAnswers ?? [];
     if (baseAnswers.length === 0) {
       return [solution];
@@ -64,6 +62,7 @@ export const HeardleGameView = ({ door, onSolved }: HeardleGameViewProps) => {
   }, [acceptedAnswers, solution]);
 
   const cumulativeDurations = useMemo(() => {
+    if (!revealDurations || revealDurations.length === 0) return [];
     const totals: number[] = [];
     revealDurations.reduce((sum, value, index) => {
       const total = sum + value;
@@ -132,6 +131,10 @@ export const HeardleGameView = ({ door, onSolved }: HeardleGameViewProps) => {
       stopPlayback();
     };
   }, [stopPlayback]);
+
+  if (!config) {
+    return null;
+  }
 
   const handlePlay = () => {
     if (result) {

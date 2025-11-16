@@ -24,17 +24,14 @@ interface MoviePixelGuessGameProps {
 const MoviePixelGuessGame = ({ door }: MoviePixelGuessGameProps) => {
   const config = door.pixelGuessConfig;
 
-  if (!config) {
-    return null;
-  }
-
   const acceptedAnswers = useMemo(() => {
+    if (!config) return [];
     const base = config.acceptedAnswers ?? [];
     const all = new Set<string>(
       [config.solution, ...base].map((answer) => normalizeGuess(answer))
     );
     return Array.from(all);
-  }, [config.acceptedAnswers, config.solution]);
+  }, [config?.acceptedAnswers, config?.solution]);
 
   const [guess, setGuess] = useState("");
   const [guessCount, setGuessCount] = useState(0);
@@ -54,17 +51,8 @@ const MoviePixelGuessGame = ({ door }: MoviePixelGuessGameProps) => {
     return PIXELATION_STEPS[index];
   }, [guessCount, status]);
 
-  useEffect(() => {
-    const image = new Image();
-    image.src = config.image;
-    image.crossOrigin = "anonymous";
-    image.onload = () => {
-      imageRef.current = image;
-      setImageLoaded(true);
-    };
-  }, [config.image]);
-
   const drawPixelated = () => {
+    if (!config) return;
     const canvas = canvasRef.current;
     const tempCanvas = hiddenCanvasRef.current;
     const image = imageRef.current;
@@ -102,13 +90,24 @@ const MoviePixelGuessGame = ({ door }: MoviePixelGuessGameProps) => {
   };
 
   useEffect(() => {
-    if (imageLoaded) {
-      drawPixelated();
-    }
-  }, [imageLoaded, currentPixelSize]);
+    if (!config) return;
+    const image = new Image();
+    image.src = config.image;
+    image.crossOrigin = "anonymous";
+    image.onload = () => {
+      imageRef.current = image;
+      setImageLoaded(true);
+    };
+  }, [config?.image]);
 
   useEffect(() => {
-    if (!imageLoaded) {
+    if (imageLoaded && config) {
+      drawPixelated();
+    }
+  }, [imageLoaded, currentPixelSize, config]);
+
+  useEffect(() => {
+    if (!imageLoaded || !config) {
       return;
     }
 
@@ -126,10 +125,10 @@ const MoviePixelGuessGame = ({ door }: MoviePixelGuessGameProps) => {
     if (guessCount === 0) {
       setMessage(null);
     }
-  }, [guessCount, imageLoaded, status]);
+  }, [guessCount, imageLoaded, status, config]);
 
   useEffect(() => {
-    if (status !== "playing" && imageLoaded) {
+    if (status !== "playing" && imageLoaded && config) {
       const canvas = canvasRef.current;
       const image = imageRef.current;
       if (!canvas || !image) {
@@ -147,7 +146,11 @@ const MoviePixelGuessGame = ({ door }: MoviePixelGuessGameProps) => {
       context.imageSmoothingEnabled = true;
       context.drawImage(image, 0, 0);
     }
-  }, [status, imageLoaded]);
+  }, [status, imageLoaded, config]);
+
+  if (!config) {
+    return null;
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

@@ -21,17 +21,14 @@ interface MusicVideoGuessGameViewProps {
 const MusicVideoGuessGameView = ({ door, onSolved }: MusicVideoGuessGameViewProps) => {
   const config = door.musicVideoConfig;
 
-  if (!config || !config.images || config.images.length === 0) {
-    return null;
-  }
-
   const targetVariants = useMemo(() => {
+    if (!config) return [];
     const base = config.acceptedAnswers ?? [];
     const all = new Set<string>(
       [config.solution, ...base].map((answer) => normalizeGuess(answer))
     );
     return Array.from(all);
-  }, [config.acceptedAnswers, config.solution]);
+  }, [config?.acceptedAnswers, config?.solution]);
 
   const [guess, setGuess] = useState("");
   const [guessCount, setGuessCount] = useState(0);
@@ -39,6 +36,10 @@ const MusicVideoGuessGameView = ({ door, onSolved }: MusicVideoGuessGameViewProp
   const [message, setMessage] = useState<string | null>(null);
   const [showVideo, setShowVideo] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
+
+  if (!config || !config.images || config.images.length === 0) {
+    return null;
+  }
 
   const isSeriesGame = door.gameSlug === "gissa-serien" || door.id === 9;
 

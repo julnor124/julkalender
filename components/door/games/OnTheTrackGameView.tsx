@@ -21,12 +21,108 @@ const POINT_COLORS: Record<number, string> = {
 
 export const OnTheTrackGameView = ({ door, onSolved }: OnTheTrackGameViewProps) => {
   const config = door.onTheTrackConfig;
+  const levels = config?.levels ?? [];
+
+  const acceptedAnswers = useMemo(() => {
+    if (!config) return [];
+    const base = config.acceptedAnswers ?? [];
+    const answer = normalise(config.answer);
+    const set = new Set<string>(base.map(normalise));
+    set.add(answer);
+    return Array.from(set);
+  }, [config?.acceptedAnswers, config?.answer]);
+
+  const [levelIndex, setLevelIndex] = useState(0);
+  const [remainingSeconds, setRemainingSeconds] = useState(30);
+  const [guessed, setGuessed] = useState<{
+    guess: string;
+    correct: boolean;
+    points: number;
+  } | null>(null);
+  const [showGuessField, setShowGuessField] = useState(false);
+  const [guessInput, setGuessInput] = useState("");
+  const [message, setMessage] = useState<string | null>(null);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
+
+  const gameFinished = levelIndex >= levels.length;
+
+  useEffect(() => {
+    if (!config || !hasStarted) {
+      setShowVideo(false);
+      return;
+    }
+
+    if (levelIndex >= levels.length && !message) {
+      if (!guessed) {
+        setMessage(`Du drog aldrig i nödbromsen:( Svaret var ${config.answer}.`);
+      } else if (guessed.correct) {
+        setMessage(
+          `Snyggt TJOHOOO! Du tog den på ${guessed.points} poäng. Rätt svar är givetvis ${config.answer}.`
+        );
+      } else {
+        setMessage(
+          `Tyvärr! ${guessed.guess} var fel. Rätt svar är ${config.answer}.`
+        );
+      }
+    }
+  }, [hasStarted, config?.answer, guessed, levelIndex, levels.length, message, config]);
+
+  useEffect(() => {
+    if (guessed?.correct) {
+      onSolved?.();
+    }
+  }, [guessed, onSolved]);
+
+  useEffect(() => {
+    if (gameFinished) {
+      onSolved?.();
+    }
+  }, [gameFinished, onSolved]);
+
+  useEffect(() => {
+    if (!hasStarted || !config) {
+      return;
+    }
+
+    if (levelIndex >= levels.length && config.videoUrl) {
+      setShowVideo(true);
+    }
+  }, [hasStarted, levelIndex, levels.length, config?.videoUrl, config]);
+
+  useEffect(() => {
+    if (!hasStarted || levelIndex >= levels.length) {
+      return;
+    }
+    setRemainingSeconds(30);
+  }, [hasStarted, levelIndex, levels.length]);
+
+  useEffect(() => {
+    if (!hasStarted || gameFinished || showGuessField || !config) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setRemainingSeconds((prev) => {
+        if (prev <= 1) {
+          window.clearInterval(interval);
+          setLevelIndex((current) =>
+            current + 1 <= levels.length ? current + 1 : current
+          );
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [hasStarted, gameFinished, showGuessField, levelIndex, levels.length, config]);
 
   if (!config) {
     return null;
   }
-
-  const levels = config.levels ?? [];
 
   if (levels.length === 0) {
     return (
@@ -48,102 +144,6 @@ export const OnTheTrackGameView = ({ door, onSolved }: OnTheTrackGameViewProps) 
       </div>
     );
   }
-
-  const acceptedAnswers = useMemo(() => {
-    const base = config.acceptedAnswers ?? [];
-    const answer = normalise(config.answer);
-    const set = new Set<string>(base.map(normalise));
-    set.add(answer);
-    return Array.from(set);
-  }, [config.acceptedAnswers, config.answer]);
-
-  const [levelIndex, setLevelIndex] = useState(0);
-  const [remainingSeconds, setRemainingSeconds] = useState(30);
-  const [guessed, setGuessed] = useState<{
-    guess: string;
-    correct: boolean;
-    points: number;
-  } | null>(null);
-  const [showGuessField, setShowGuessField] = useState(false);
-  const [guessInput, setGuessInput] = useState("");
-  const [message, setMessage] = useState<string | null>(null);
-  const [hasStarted, setHasStarted] = useState(false);
-  const [showVideo, setShowVideo] = useState(false);
-
-  const gameFinished = levelIndex >= levels.length;
-
-  useEffect(() => {
-    if (!hasStarted) {
-      setShowVideo(false);
-      return;
-    }
-
-    if (levelIndex >= levels.length && !message) {
-      if (!guessed) {
-        setMessage(`Du drog aldrig i nödbromsen:( Svaret var ${config.answer}.`);
-      } else if (guessed.correct) {
-        setMessage(
-          `Snyggt TJOHOOO! Du tog den på ${guessed.points} poäng. Rätt svar är givetvis ${config.answer}.`
-        );
-      } else {
-        setMessage(
-          `Tyvärr! ${guessed.guess} var fel. Rätt svar är ${config.answer}.`
-        );
-      }
-    }
-  }, [hasStarted, config.answer, guessed, levelIndex, levels.length, message]);
-
-  useEffect(() => {
-    if (guessed?.correct) {
-      onSolved?.();
-    }
-  }, [guessed, onSolved]);
-
-  useEffect(() => {
-    if (gameFinished) {
-      onSolved?.();
-    }
-  }, [gameFinished, onSolved]);
-
-  useEffect(() => {
-    if (!hasStarted) {
-      return;
-    }
-
-    if (levelIndex >= levels.length && config.videoUrl) {
-      setShowVideo(true);
-    }
-  }, [hasStarted, levelIndex, levels.length, config.videoUrl]);
-
-  useEffect(() => {
-    if (!hasStarted || levelIndex >= levels.length) {
-      return;
-    }
-    setRemainingSeconds(30);
-  }, [hasStarted, levelIndex, levels.length]);
-
-  useEffect(() => {
-    if (!hasStarted || gameFinished || showGuessField) {
-      return;
-    }
-
-    const interval = window.setInterval(() => {
-      setRemainingSeconds((prev) => {
-        if (prev <= 1) {
-          window.clearInterval(interval);
-          setLevelIndex((current) =>
-            current + 1 <= levels.length ? current + 1 : current
-          );
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => {
-      window.clearInterval(interval);
-    };
-  }, [hasStarted, gameFinished, showGuessField, levelIndex, levels.length]);
 
   const currentLevel =
     levels.length > 0
