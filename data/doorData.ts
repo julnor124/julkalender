@@ -6,7 +6,7 @@ export const doorData: DoorModel[] = [
     title: "WORDLE",
     description:
       "Välkommen till julkalendern, tänk att jag löste en i år igen!",
-    password: "test",
+    password: "välkomna",
     gameSlug: "wordle",
     gameType: "wordle",
     wordleConfig: {
@@ -21,7 +21,7 @@ export const doorData: DoorModel[] = [
     title: "Lucka 2: Minikorsord",
     description:
       "Tips: Klicka på en ledtråd för att hoppa till ordet. En miniruta kommer poppa upp när du fyllt i allt och säga om du har rätt eller fel",
-    password: "test",
+    password: "ennydag",
     gameSlug: "crossword",
     gameType: "crossword",
     crosswordConfig: {
@@ -108,7 +108,7 @@ export const doorData: DoorModel[] = [
     title: "Pixelstjärnan",
     description:
       "Den pixliga siluetten hör hemma på scen. Avslöja vem det är innan gissningarna tar slut!",
-    password: "test",
+    password: "star",
     gameSlug: "pixel",
     gameType: "pixel",
   },
@@ -117,7 +117,7 @@ export const doorData: DoorModel[] = [
     title: "LUCKA 4: Connections",
     description:
       "Hitta fyra grupper med fyra ord vardera. (håll koll längst ner på skärmen, där står det om du är one away",
-    password: "test",
+    password: "tjena",
     gameSlug: "connections",
     gameType: "connections",
     connectionsConfig: {
@@ -154,7 +154,7 @@ export const doorData: DoorModel[] = [
     title: "LUCKA 5: MUSIKFREDAG",
     description:
       "Lyssna på några sekunder i taget och gissa låten. Skippa för att höra mer – men du får bara sex försök!",
-    password: "test",
+    password: "anotherone",
     gameSlug: "heardle",
     gameType: "heardle",
     heardleConfig: {
@@ -171,7 +171,7 @@ export const doorData: DoorModel[] = [
     title: "LUCKA 6: På spåret",
     description:
       "Hoppa på tåget! Läs ledtrådarna, dra i nödbromsen när du vet svaret och se hur många poäng du tar den på.",
-    password: "test",
+    password: "hejhopp",
     gameSlug: "pa-sparet",
     gameType: "on-the-track",
     onTheTrackConfig: {
@@ -216,7 +216,7 @@ export const doorData: DoorModel[] = [
     title: "LUCKA 7: Rebus",
     description:
       "",
-    password: "test",
+    password: "busig",
     gameSlug: "rebus",
     gameType: "rebus",
     rebusConfig: {
@@ -231,7 +231,7 @@ export const doorData: DoorModel[] = [
     title: "LUCKA 8: Gissa flaggan",
     description:
       "Kan du se vilket land det är på bara en glimt av flaggan? Varje gissning avslöjar lite mer!",
-    password: "test",
+    password: "hihi",
     gameSlug: "gissa-flaggan",
     gameType: "flag",
     flagGuessConfig: {
@@ -242,48 +242,30 @@ export const doorData: DoorModel[] = [
   },
   {
     id: 9,
-    title: "LUCKA 9: På spåret – ARTIST",
+    title: "LUCKA 9: Gissa serien",
     description:
-      "Följ ledtrådarna och lista ut vilken superstjärna vi är på väg mot!",
-    password: "test",
-    gameSlug: "pa-sparet-rihanna",
-    gameType: "on-the-track",
-    onTheTrackConfig: {
-      answer: "Rihanna",
-      acceptedAnswers: ["Rihanna", "Robyn Rihanna Fenty", "Robyn Fenty"],
-      videoUrl: "https://www.youtube-nocookie.com/embed/CvBfHwUxHIk?autoplay=1&start=0",
-      levels: [
-        {
-          points: 10,
-          image: "/images/barbados10p.jpg",
-          clue:
-            "Vi söker en person vars första hem ligger öster om Karibien och vars barndomsadress senare blev pilgrimsplats för fans. Personen sjöng tidigt i skolans kör men drömde sig ut mot större scener och när andra byggde sandslott byggde denna ett globalt varumärke.",
-        },
-        {
-          points: 8,
-          image: "/images/superbowl8p.jpg",
-          clue:
-            "Nio nummer-ett-hits på Billboard hittills, och uppträdde på Super Bowl – medan hen visade upp något mer än bara sin röst.",
-        },
-        {
-          points: 6,
-          image: "/images/fenty6p.jpg",
-          clue:
-            "När personen var femton fick hen chansen att sjunga för en amerikansk producent och världen fick snart höra en paraplysång som aldrig tog slut. ☂️ Idag finns även ett skönhetsmärke som revolutionerade branschen.",
-        },
-        {
-          points: 4,
-          image: "/images/diamonds4p.jpg",
-          clue:
-            "Personen sjunger om diamonds, work och att bitch better have my money. Från popprinsessa till modeikon och miljardär, men släpper hellre smink än nya låtar.",
-        },
-        {
-          points: 2,
-          image: "/images/umbrella2p.jpg",
-          clue:
-            "Denna kvinna kommer från Barbados, heter Robyn Fenty, och är världens mest lysande stjärna under paraplyet. ☂️ Vem är vi på väg mot?",
-        },
+      "Kan ni lista ut vilken serie det är utifrån flera bilder?",
+    password: "ojoj",
+    gameSlug: "gissa-serien",
+    gameType: "musicvideo",
+    musicVideoConfig: {
+      images: [
+        "/images/lastofus1.png",
+        "/images/lastofus2.png",
+        "/images/lastofus3.png",
+        "/images/lastofus4.png",
+        "/images/lastofus5.png",
+        "/images/lastofus6.png",
       ],
+      solution: "The Last of Us",
+      acceptedAnswers: [
+        "The Last of Us",
+        "the last of us",
+        "Last of Us",
+        "last of us",
+      ],
+      videoUrl:
+        "https://www.youtube-nocookie.com/embed/uLtkt8BonwM?autoplay=1&start=0",
     },
   },
   {
@@ -291,7 +273,7 @@ export const doorData: DoorModel[] = [
     title: "LUCKA 10: Quizdag",
     description:
       "Idag är det quiiiizzz!!! Vem vinner???",
-    password: "test",
+    password: "tjoho",
     gameSlug: "quizkvall",
     gameType: "trivia-quiz",
     triviaQuizConfig: {
@@ -359,16 +341,31 @@ export const doorData: DoorModel[] = [
     title: "LUCKA 11: Pixlad filmkväll",
     description:
       "Linslus i pixlar! Gissa vilken klassisk film som döljer sig bakom rutor som sakta skärps.",
-    password: "test",
+    password: "julia",
     gameSlug: "pixlad-film",
     gameType: "pixel-movie",
+    pixelGuessConfig: {
+      image: "/images/greenmile.jpg",
+      solution: "The Green Mile",
+      acceptedAnswers: [
+        "the green mile",
+        "green mile",
+        "thegreenmile",
+        "gröna milen",
+        "den gröna milen",
+        "grona milen",
+      ],
+      placeholder: "Vilken film är det?",
+      successMessage: "🍿 Det stämmer! Filmen är The Green Mile.",
+      revealMessage: "Syyynd! Filmen var The Green Mile.",
+    },
   },
   {
     id: 12,
     title: "LUCKA 12: Musikfredag",
     description:
       "Det är fredag! Lyssna på några sekunder i taget och gissa låten. Skippa för att höra mer – men du får bara sex försök!",
-    password: "test",
+    password: "slay",
     gameSlug: "musikafton",
     gameType: "heardle",
     heardleConfig: {
@@ -382,27 +379,44 @@ export const doorData: DoorModel[] = [
   },
   {
     id: 13,
-    title: "Julens djur",
+    title: "Lucka 13: WORDLE",
     description:
-      "Renen hjälper tomten att flyga. De har mycket att göra denna natt.",
-    password: "test",
-    gameSlug: "game13",
-    gameType: "content",
+      "Idag är det dags för ett nytt Wordle! Vad kan det vara?",
+    password: "queen",
+    gameSlug: "wordle-lag",
+    gameType: "wordle",
+    wordleConfig: {
+      solution: "löven",
+      maxGuesses: 6,
+      instructions: "Gissa ordet!",
+      hint: "Hemma på T3.",
+    },
   },
   {
     id: 14,
-    title: "Tredje ljuset",
-    description: "Det tredje ljuset tänds. Snart är det jul!",
-    password: "test",
-    gameSlug: "game14",
-    gameType: "content",
+    title: "LUCKA 14: Musikrebus",
+    description:
+      "Kan du lista ut vilken ikonisk låt det är med bara med emojis?",
+    password: "jahaja",
+    gameSlug: "musikrebus-1",
+    gameType: "rebus",
+    rebusConfig: {
+      prompt: "💃💃💃🎉🎈🥳",
+      solution: "Girls Just Wanna Have Fun",
+      acceptedAnswers: [
+        "Girls Just Wanna Have Fun",
+        "Girls Just Want To Have Fun",
+        "Girls just wanna have fun",
+        "Girls just want to have fun",
+      ],
+    },
   },
   {
     id: 15,
     title: "LUCKA 15: Musikconnections",
     description:
       "Hitta grupper av fyra, idag är det musiktema! (håll koll längst ner på skärmen, där står det om du är one away)",
-    password: "test",
+    password: "musik",
     gameSlug: "musikconnections",
     gameType: "connections",
     connectionsConfig: {
@@ -445,34 +459,67 @@ export const doorData: DoorModel[] = [
   },
   {
     id: 16,
-    title: "Julmarknad",
-    description: "Vi går till julmarknaden och köper glögg och pepparkakor.",
-    password: "test",
-    gameSlug: "game16",
-    gameType: "content",
+    title: "LUCKA 16: Gissa landet",
+    description:
+      "Titta noga på bilden, vilket land gömmer sig här? Du har 6 försök på dig.",
+    password: "tomte",
+    gameSlug: "gissa-landet-2",
+    gameType: "flag",
+    flagGuessConfig: {
+      image: "/images/japan.png",
+      solution: "Japan",
+      acceptedAnswers: ["Japan", "日本"],
+    },
   },
   {
     id: 17,
-    title: "Granpynt",
-    description: "Idag pyntar vi granen med alla våra favoritprylar.",
-    password: "test",
-    gameSlug: "game17",
-    gameType: "content",
+    title: "LUCKA 17: Gissa musikvideon",
+    description:
+      "Kan ni lista ut vilken ikonisk musikvideo det är utifrån sex bilder?",
+    password: "mat",
+    gameSlug: "gissa-musikvideon",
+    gameType: "musicvideo",
+    musicVideoConfig: {
+      images: [
+        "/images/musicvideo1.png",
+        "/images/musicvideo2.png",
+        "/images/musicvideo3.png",
+        "/images/musicvideo4.png",
+        "/images/musicvideo5.png",
+        "/images/musicvideo6.png",
+      ],
+      solution: "Take On Me",
+      acceptedAnswers: [
+        "Take on me",
+        "take on me",
+        "aha take on me",
+        "a-ha take on me",
+      ],
+      videoUrl:
+        "https://www.youtube-nocookie.com/embed/djV11Xbc914?autoplay=1&start=0",
+    },
   },
   {
     id: 18,
-    title: "Fjärde ljuset",
-    description: "Det fjärde och sista ljuset tänds. Nu är det snart jul!",
-    password: "test",
-    gameSlug: "game18",
-    gameType: "content",
+    title: "LUCKA 18: Gissa huvudstaden",
+    description:
+      "Titta noga på flaggan, vilken HUVUDSTAD tillhör den? Du har 6 försök på dig.",
+    password: "hejigen",
+    gameSlug: "gissa-huvudstaden",
+    gameType: "flag",
+    flagGuessConfig: {
+      image: "/images/nyazeeland.png",
+      solution: "Wellington",
+      acceptedAnswers: ["Wellington"],
+      guessType: "capital",
+    },
   },
   {
     id: 19,
     title: "LUCKA 19: Musikfredag",
     description:
       "Fredagsfeeling igen! Klarar du att gissa låten?",
-    password: "test",
+    password: "etttilllösen",
     gameSlug: "musikfredag",
     gameType: "heardle",
     heardleConfig: {
@@ -486,47 +533,137 @@ export const doorData: DoorModel[] = [
   },
   {
     id: 20,
-    title: "Julbord",
-    description: "Idag dukar vi julbordet med allt det goda vi har.",
-    password: "test",
-    gameSlug: "game20",
-    gameType: "content",
+    title: "LUCKA 20: Vem är det?",
+    description:
+      "Här bakom gömmer sig en känd person, men vem kan det vara? Bilden blir tydligare för varje gissning. Du har 6 gissningar att klura ut vem det är.",
+    password: "trevligt",
+    gameSlug: "pixlad-kandis",
+    gameType: "pixel-movie",
+    pixelGuessConfig: {
+      image: "/images/barackobama.png",
+      solution: "Barack Obama",
+      acceptedAnswers: ["Barack Obama", "barack obama", "Obama", "obama"],
+      placeholder: "Vem är det?",
+      successMessage: "WOHOOOO Visst var det Barack Obama! ✨",
+      revealMessage: "Det var Barack Obama!",
+    },
   },
   {
     id: 21,
-    title: "Årets längsta natt",
+    title: "LUCKA 21: På spåret – ARTIST",
     description:
-      "Det är årets längsta natt. Imorgon blir dagarna längre igen.",
-    password: "test",
-    gameSlug: "game21",
-    gameType: "content",
+      "Följ ledtrådarna och lista ut vilken superstjärna vi är på väg mot!",
+    password: "hejfamiljen",
+    gameSlug: "pa-sparet-artist",
+    gameType: "on-the-track",
+    onTheTrackConfig: {
+      answer: "Rihanna",
+      acceptedAnswers: ["Rihanna", "Robyn Rihanna Fenty", "Robyn Fenty"],
+      videoUrl: "https://www.youtube-nocookie.com/embed/CvBfHwUxHIk?autoplay=1&start=0",
+      levels: [
+        {
+          points: 10,
+          image: "/images/barbados10p.jpg",
+          clue:
+            "Vi söker en person vars första hem ligger öster om Karibien och vars barndomsadress senare blev pilgrimsplats för fans. Personen sjöng tidigt i skolans kör men drömde sig ut mot större scener och när andra byggde sandslott byggde denna ett globalt varumärke.",
+        },
+        {
+          points: 8,
+          image: "/images/superbowl8p.jpg",
+          clue:
+            "Nio nummer-ett-hits på Billboard hittills, och uppträdde på Super Bowl – medan hen visade upp något mer än bara sin röst.",
+        },
+        {
+          points: 6,
+          image: "/images/fenty6p.jpg",
+          clue:
+            "När personen var femton fick hen chansen att sjunga för en amerikansk producent och världen fick snart höra en paraplysång som aldrig tog slut. ☂️ Idag finns även ett skönhetsmärke som revolutionerade branschen.",
+        },
+        {
+          points: 4,
+          image: "/images/diamonds4p.jpg",
+          clue:
+            "Personen sjunger om diamonds, work och att bitch better have my money. Från popprinsessa till modeikon och miljardär, men släpper hellre smink än nya låtar.",
+        },
+        {
+          points: 2,
+          image: "/images/umbrella2p.jpg",
+          clue:
+            "Denna kvinna kommer från Barbados, heter Robyn Fenty, och är världens mest lysande stjärna under paraplyet. ☂️ Vem är vi på väg mot?",
+        },
+      ],
+    },
   },
   {
     id: 22,
-    title: "Julklappar under granen",
+    title: "LUCKA 22: Historiespel",
     description:
-      "Julklapparna ligger under granen. Snart får vi öppna dem!",
-    password: "test",
-    gameSlug: "game22",
-    gameType: "content",
+      "Titta på bilderna och gissa vilket år varje historiska händelse inträffade. Du har en gissning per event! Knappen för att trycka sig vidare kommer längst ner",
+    password: "detnärmarsig",
+    gameSlug: "historiespel",
+    gameType: "history-guess",
+    historyGuessConfig: {
+      events: [
+        {
+          title: "Opera husets invigning",
+          image: "/images/operahouse1973.png",
+          year: 1973,
+          description:
+            "Sydney Opera House i Australien invigdes officiellt den 20 oktober 1973 av drottning Elizabeth II. Det ikoniska byggnadsverket, designat av den danske arkitekten Jørn Utzon, tog 14 år att bygga och har blivit ett av världens mest kända landmärken.",
+        },
+        {
+          title: "Live Aid",
+          image: "/images/liveaid1985.png",
+          year: 1985,
+          description:
+            "Live Aid var en dubbel konsert som hölls den 13 juli 1985 samtidigt på Wembley Stadium i London och John F. Kennedy Stadium i Philadelphia. Konserten organiserades av Bob Geldof och Midge Ure för att samla in pengar till svältande människor i Etiopien. Cirka 1,5 miljarder människor tittade på TV-sändningen världen över.",
+        },
+        {
+          title: "Justin Bieber Believe Tour",
+          image: "/images/believe2013.png",
+          year: 2013,
+          description:
+            "Justin Biebers Believe Tour startade i september 2012, men bilden är från 2013, och var hans tredje världsturné. Turnén följde hans tredje studioalbum 'Believe' och inkluderade över 150 konserter i Nordamerika, Europa, Asien, Oceanien och Latinamerika. Turnén blev en av de mest framgångsrika turnéerna det året.",
+        },
+        {
+          title: "Evergreen skeppet som fastnade i Suezkanalen",
+          image: "/images/ship2021.png",
+          year: 2021,
+          description:
+            "Den 23 mars 2021 fastnade containerskeppet Ever Given i Suezkanalen och blockerade en av världens viktigaste handelsvägar i sex dagar. Skeppet, som är 400 meter långt, körde fast på grund av starka vindar och sandstorm. Händelsen orsakade enorma förseningar i global handel och kostade miljarder dollar.",
+        },
+        {
+          title: "Bragden i Berlin",
+          image: "/images/bragdeniberlin2012.png",
+          year: 2012,
+          description:
+            "Den 16 oktober 2012 mötte Sveriges herrlandslag i fotboll Tysklands herrlandslag i fotboll på Olympiastadion, Berlin i ett VM-kval till VM 2014. Matchen var en dramatisk uppgörelse där Tyskland ledde med 4-0 innan Sverige vände och matchen slutade 4-4. Denna osannolika vändning har kommit att kallas för 'Bragden i Berlin' i svensk fotbollssammanhang.",
+        },
+      ],
+    },
   },
   {
     id: 23,
     title: "Julafton",
     description:
-      "Det är julafton! Tomten kommer i natt med alla julklappar.",
-    password: "test",
-    gameSlug: "game23",
-    gameType: "content",
+      "Vi tar en sista wordle va hihihi",
+    password: "viärnära",
+    gameSlug: "wordle-snart",
+    gameType: "wordle",
+    wordleConfig: {
+      solution: "snart",
+      maxGuesses: 6,
+      instructions: "Gissa ordet!",
+    },
   },
   {
     id: 24,
-    title: "Juldagen",
+    title: "LUCKA 24: Escape room – God Jul",
     description:
-      "God jul! Idag firade vi jul tillsammans. Det är den bästa dagen på året!",
-    password: "test",
-    gameSlug: "game24",
-    gameType: "content",
+      "Sista luckan! Idag blir det MAXAT DELUXE. Klara alla 5 nivåer för att få en present",
+    password: "godjävlajul",
+    gameSlug: "escape-room",
+    gameType: "escape",
   },
 ];
 

@@ -14,6 +14,9 @@ import HeardleGameView from "@/components/door/games/HeardleGameView";
 import RebusGameView from "@/components/door/games/RebusGameView";
 import OnTheTrackGameView from "@/components/door/games/OnTheTrackGameView";
 import GuessTheFlagGameView from "@/components/door/games/GuessTheFlagGameView";
+import MusicVideoGuessGameView from "@/components/door/games/MusicVideoGuessGameView";
+import EscapeRoomGameView from "@/components/door/games/EscapeRoomGameView";
+import HistoryGuessGameView from "@/components/door/games/HistoryGuessGameView";
 
 interface DoorGameViewProps {
   door: DoorModel;
@@ -60,8 +63,20 @@ export const DoorGameView: FC<DoorGameViewProps> = ({ door }) => {
     return <OnTheTrackGameView door={door} />;
   }
 
+  if (door.gameType === "musicvideo" && door.musicVideoConfig) {
+    return <MusicVideoGuessGameView door={door} />;
+  }
+
+  if (door.gameType === "escape") {
+    return <EscapeRoomGameView door={door} />;
+  }
+
   if (door.gameType === "rebus" && door.rebusConfig) {
     return <RebusGameView door={door} />;
+  }
+
+  if (door.gameType === "history-guess" && door.historyGuessConfig) {
+    return <HistoryGuessGameView door={door} />;
   }
 
   return <DoorContentView door={door} />;

@@ -5,12 +5,13 @@ import { DoorModel } from "@/models/door";
 
 interface RebusGameViewProps {
   door: DoorModel;
+  onSolved?: () => void;
 }
 
 const normalise = (value: string) =>
   value.toLowerCase().replace(/\s+/g, " ").trim();
 
-export const RebusGameView = ({ door }: RebusGameViewProps) => {
+export const RebusGameView = ({ door, onSolved }: RebusGameViewProps) => {
   if (!door.rebusConfig) {
     return null;
   }
@@ -40,6 +41,7 @@ export const RebusGameView = ({ door }: RebusGameViewProps) => {
       }
       if (allValidAnswers.includes(candidate)) {
         setMessage(`Woho! Rätt svar är “${solution}”. 🌟`);
+        onSolved?.();
       } else {
         setMessage("Nja, inte riktigt. Testa igen eller visa svaret!");
       }
@@ -50,7 +52,8 @@ export const RebusGameView = ({ door }: RebusGameViewProps) => {
   const handleReveal = useCallback(() => {
     setRevealed(true);
     setMessage(`Svaret på rebusen är “${solution}”. 🎉`);
-  }, [solution]);
+    onSolved?.();
+  }, [solution, onSolved]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a0924] via-[#19104a] to-[#2d0f62] text-[#fdf7f7] font-festive">

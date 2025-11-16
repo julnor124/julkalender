@@ -49,6 +49,14 @@ export interface DoorFlagGuessConfig {
   image: string;
   solution: string;
   acceptedAnswers?: string[];
+  guessType?: "land" | "capital";
+}
+
+export interface DoorMusicVideoConfig {
+  images: string[];
+  solution: string;
+  acceptedAnswers?: string[];
+  videoUrl?: string;
 }
 
 export interface DoorConnectionsGroup {
@@ -60,6 +68,27 @@ export interface DoorConnectionsGroup {
 
 export interface DoorConnectionsConfig {
   groups: DoorConnectionsGroup[];
+}
+
+export interface DoorPixelGuessConfig {
+  image: string;
+  solution: string;
+  acceptedAnswers?: string[];
+  placeholder?: string;
+  successMessage?: string;
+  revealMessage?: string;
+}
+
+export interface DoorHistoryEvent {
+  image: string;
+  year: number;
+  description: string;
+  title: string;
+  acceptedYears?: number[];
+}
+
+export interface DoorHistoryGuessConfig {
+  events: DoorHistoryEvent[];
 }
 
 export type DoorGameType =
@@ -74,7 +103,10 @@ export type DoorGameType =
   | "heardle"
   | "on-the-track"
   | "rebus"
-  | "flag";
+  | "flag"
+  | "musicvideo"
+  | "escape"
+  | "history-guess";
 
 export interface DoorModel {
   id: number;
@@ -91,7 +123,10 @@ export interface DoorModel {
   onTheTrackConfig?: DoorOnTheTrackConfig;
   rebusConfig?: DoorRebusConfig;
   flagGuessConfig?: DoorFlagGuessConfig;
+  musicVideoConfig?: DoorMusicVideoConfig;
   connectionsConfig?: DoorConnectionsConfig;
+  pixelGuessConfig?: DoorPixelGuessConfig;
+  historyGuessConfig?: DoorHistoryGuessConfig;
 }
 
 export interface DoorLayoutRow {

@@ -5,6 +5,7 @@ import { DoorModel } from "@/models/door";
 
 interface OnTheTrackGameViewProps {
   door: DoorModel;
+  onSolved?: () => void;
 }
 
 const normalise = (value: string) =>
@@ -18,7 +19,7 @@ const POINT_COLORS: Record<number, string> = {
   2: "#d97706",
 };
 
-export const OnTheTrackGameView = ({ door }: OnTheTrackGameViewProps) => {
+export const OnTheTrackGameView = ({ door, onSolved }: OnTheTrackGameViewProps) => {
   const config = door.onTheTrackConfig;
 
   if (!config) {
@@ -91,6 +92,18 @@ export const OnTheTrackGameView = ({ door }: OnTheTrackGameViewProps) => {
       }
     }
   }, [hasStarted, config.answer, guessed, levelIndex, levels.length, message]);
+
+  useEffect(() => {
+    if (guessed?.correct) {
+      onSolved?.();
+    }
+  }, [guessed, onSolved]);
+
+  useEffect(() => {
+    if (gameFinished) {
+      onSolved?.();
+    }
+  }, [gameFinished, onSolved]);
 
   useEffect(() => {
     if (!hasStarted) {

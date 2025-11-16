@@ -4,15 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { DoorModel } from "@/models/door";
 
 const MAX_GUESSES = 6;
-const TARGET_WORDS = [
-  "the green mile",
-  "green mile",
-  "thegreenmile",
-  "gröna milen",
-  "den gröna milen",
-  "grona milen",
-];
-const IMAGE_SRC = "/images/greenmile.jpg";
 
 const PIXELATION_STEPS = [96, 64, 40, 24, 12, 6];
 
@@ -31,6 +22,20 @@ interface MoviePixelGuessGameProps {
 }
 
 const MoviePixelGuessGame = ({ door }: MoviePixelGuessGameProps) => {
+  const config = door.pixelGuessConfig;
+
+  if (!config) {
+    return null;
+  }
+
+  const acceptedAnswers = useMemo(() => {
+    const base = config.acceptedAnswers ?? [];
+    const all = new Set<string>(
+      [config.solution, ...base].map((answer) => normalizeGuess(answer))
+    );
+    return Array.from(all);
+  }, [config.acceptedAnswers, config.solution]);
+
   const [guess, setGuess] = useState("");
   const [guessCount, setGuessCount] = useState(0);
   const [status, setStatus] = useState<GameStatus>("playing");
@@ -51,13 +56,13 @@ const MoviePixelGuessGame = ({ door }: MoviePixelGuessGameProps) => {
 
   useEffect(() => {
     const image = new Image();
-    image.src = IMAGE_SRC;
+    image.src = config.image;
     image.crossOrigin = "anonymous";
     image.onload = () => {
       imageRef.current = image;
       setImageLoaded(true);
     };
-  }, []);
+  }, [config.image]);
 
   const drawPixelated = () => {
     const canvas = canvasRef.current;
@@ -109,12 +114,12 @@ const MoviePixelGuessGame = ({ door }: MoviePixelGuessGameProps) => {
 
     if (status === "playing" && guessCount >= MAX_GUESSES) {
       setStatus("revealed");
-      setMessage("Det var The Green Mile! 🎬");
+      setMessage(config.revealMessage || `Det var ${config.solution}!`);
       return;
     }
 
     if (status === "solved") {
-      setMessage("Det är The Green Mile 🍿");
+      setMessage(config.successMessage || `Det är ${config.solution}!`);
       return;
     }
 
@@ -151,7 +156,7 @@ const MoviePixelGuessGame = ({ door }: MoviePixelGuessGameProps) => {
     }
 
     const normalized = normalizeGuess(guess);
-    const isCorrect = TARGET_WORDS.some((word) => normalized === normalizeGuess(word));
+    const isCorrect = acceptedAnswers.includes(normalized);
 
     if (isCorrect) {
       setStatus("solved");
@@ -214,7 +219,7 @@ const MoviePixelGuessGame = ({ door }: MoviePixelGuessGameProps) => {
               onChange={(event) => setGuess(event.target.value)}
               maxLength={40}
               disabled={status !== "playing"}
-              placeholder="Vilken film är det?"
+              placeholder={config.placeholder || "Vad är det?"}
               className="
                 w-full
                 rounded-xl
@@ -253,12 +258,12 @@ const MoviePixelGuessGame = ({ door }: MoviePixelGuessGameProps) => {
 
           {status === "solved" && (
             <p className="mt-4 text-lg font-semibold text-[#ffe89c]">
-              🍿 Det stämmer! Filmen är The Green Mile.
+              {config.successMessage || `Det stämmer! Det är ${config.solution}.`}
             </p>
           )}
           {status === "revealed" && (
             <p className="mt-4 text-lg font-semibold text-[#ffe89c]">
-              Syyyynd! Filmen var The Green Mile.
+              {config.revealMessage || `Det var ${config.solution}.`}
             </p>
           )}
         </section>

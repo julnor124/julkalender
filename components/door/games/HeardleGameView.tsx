@@ -12,6 +12,7 @@ import { DoorModel } from "@/models/door";
 
 interface HeardleGameViewProps {
   door: DoorModel;
+  onSolved?: () => void;
 }
 
 type GuessResult = "correct" | "revealed";
@@ -37,7 +38,7 @@ const isCorrectGuess = (
   });
 };
 
-export const HeardleGameView = ({ door }: HeardleGameViewProps) => {
+export const HeardleGameView = ({ door, onSolved }: HeardleGameViewProps) => {
   if (!door.heardleConfig) {
     return null;
   }
@@ -150,6 +151,7 @@ export const HeardleGameView = ({ door }: HeardleGameViewProps) => {
       setResult("revealed");
       setShowVideo(true);
       stopPlayback();
+      onSolved?.();
     }
   };
 
@@ -165,6 +167,7 @@ export const HeardleGameView = ({ door }: HeardleGameViewProps) => {
       );
       setShowVideo(true);
       stopPlayback();
+      onSolved?.();
     } else {
       setMessage(
         "BUUUUHH kom igen nu då! Prova att skippa om du behöver höra mer."

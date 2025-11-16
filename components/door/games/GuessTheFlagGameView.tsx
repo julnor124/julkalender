@@ -12,8 +12,8 @@ interface ClipStep {
 }
 
 const CLIP_STEPS: ClipStep[] = [
-  { top: 40, right: 75, bottom: 25, left: 20 }, // smal remsa till vänster
-  { top: 40, right: 45, bottom: 25, left: 25 }, // centralt fönster
+  { top: 30, right: 40, bottom: 30, left: 40 }, // lite tydligare centralt fönster direkt
+  { top: 40, right: 45, bottom: 25, left: 25 },
   { top: 40, right: 15, bottom: 15, left: 15 },
   { top: 40, right: 10, bottom: 10, left: 10 },
   { top: 40, right: 10, bottom: 5, left: 5 },
@@ -102,7 +102,7 @@ const GuessTheFlagGameView = ({ door }: GuessTheFlagGameViewProps) => {
       return;
     }
 
-    setFeedback("No<3 Testa igen");
+    setFeedback("");
   };
 
   return (
@@ -126,7 +126,11 @@ const GuessTheFlagGameView = ({ door }: GuessTheFlagGameViewProps) => {
                 <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#020b16] shadow-[0_20px_40px_rgba(5,12,28,0.5)]">
                   <img
                     src={config.image}
-                    alt="Gissa flaggan"
+                    alt={
+                      config.guessType === "capital"
+                        ? "Gissa huvudstaden"
+                        : "Gissa flaggan"
+                    }
                     className="w-full object-cover transition-[clip-path] duration-700 ease-out"
                     style={{
                       clipPath: `inset(${clipInset.top}% ${clipInset.right}% ${clipInset.bottom}% ${clipInset.left}%)`,
@@ -147,7 +151,13 @@ const GuessTheFlagGameView = ({ door }: GuessTheFlagGameViewProps) => {
                   type="text"
                   value={inputValue}
                   onChange={(event) => setInputValue(event.target.value)}
-                  placeholder={status === "playing" ? "Vilket land tillhör flaggan?" : "Spelet är slut"}
+                  placeholder={
+                    status === "playing"
+                      ? config.guessType === "capital"
+                        ? "Vilken huvudstad?"
+                        : "Vilket land?"
+                      : "Spelet är slut"
+                  }
                   disabled={status !== "playing"}
                   className="w-full rounded-xl border border-white/10 bg-[#172949]/80 px-5 py-[1.1rem] text-center text-lg text-[#fdf7f7] shadow-[0_10px_25px_rgba(5,12,28,0.45)] outline-none transition focus:border-[#ffe89c] focus:ring-2 focus:ring-[#ffe89c]/80 disabled:cursor-not-allowed disabled:opacity-60"
                 />
@@ -168,7 +178,7 @@ const GuessTheFlagGameView = ({ door }: GuessTheFlagGameViewProps) => {
                 <ul className="mt-3 space-y-2">
                   {entries.length === 0 && (
                     <li className="rounded-2xl border border-white/5 bg-[#0f2035]/60 px-4 py-3 text-sm text-[#F9DADA]/60">
-                      Inga gissningar ännu – flaggan väntar!
+                      Inga gissningar ännu!
                     </li>
                   )}
                   {entries.map((entry, index) => (
@@ -195,7 +205,7 @@ const GuessTheFlagGameView = ({ door }: GuessTheFlagGameViewProps) => {
                 <div className="mt-6 rounded-3xl border border-emerald-200/30 bg-emerald-200/15 px-6 py-5 text-sm text-emerald-50">
                   <p>
                     {status === "won"
-                      ? "LALALALALAAAAA! 🎉 Du kände igen flaggan."
+                      ? "LALALALALAAAAA! 🎉 Braaaaa jävla jobbat."
                       : `Den var svår:( Svaret var ${config.solution}.`}
                   </p>
                 </div>

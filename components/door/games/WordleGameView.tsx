@@ -1,6 +1,7 @@
 "use client";
 
 import type { FC } from "react";
+import { useEffect } from "react";
 import { DoorModel } from "@/models/door";
 import { useWordleGameViewModel } from "@/viewmodels/useWordleGameViewModel";
 
@@ -34,6 +35,7 @@ const tilePalette: Record<
 
 interface WordleGameViewProps {
   door: DoorModel;
+  onSolved?: () => void;
 }
 
 interface BoardCell {
@@ -41,7 +43,7 @@ interface BoardCell {
   state: BoardState;
 }
 
-export const WordleGameView: FC<WordleGameViewProps> = ({ door }) => {
+export const WordleGameView: FC<WordleGameViewProps> = ({ door, onSolved }) => {
   const {
     title,
     description,
@@ -78,9 +80,25 @@ export const WordleGameView: FC<WordleGameViewProps> = ({ door }) => {
     }));
   });
 
+  useEffect(() => {
+    if (status === "won" || status === "lost") {
+      onSolved?.();
+    }
+  }, [status, onSolved]);
+
   const gameMessage = (() => {
+    const lastGuess = guesses[guesses.length - 1];
+
+    if (
+      door.id === 13 &&
+      status === "playing" &&
+      lastGuess?.guess === "LUCIA"
+    ) {
+      return "ha ha ha du trodde allt du var smart nu va att gissa lucia på lucia";
+    }
+
     if (status === "won") {
-      return "Vem fan är som dig queen, klart ordet var glöööögg 🎉";
+      return `Vem fan är som dig queen, klart ordet var ${door.wordleConfig?.solution.toUpperCase()} 🎉`;
     }
     if (status === "lost" && door.wordleConfig) {
       return `Ordet var ${door.wordleConfig.solution.toUpperCase()}. Bättre lycka nästa gång!`;
