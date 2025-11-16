@@ -100,17 +100,33 @@ export const HeardleGameView = ({ door, onSolved }: HeardleGameViewProps) => {
 
   const playSegment = useCallback(
     async (segmentIndex: number) => {
-      if (!audioRef.current || !hasLoaded) {
+      if (!audioRef.current) {
+        setMessage("Ljudet är inte redo än. Vänta lite...");
         return;
       }
       const audio = audioRef.current;
       const duration = cumulativeDurations[segmentIndex];
 
+      // Ensure audio is loaded on iOS
+      if (audio.readyState < 2) {
+        try {
+          await audio.load();
+        } catch (loadError) {
+          console.error("Failed to load audio:", loadError);
+        }
+      }
+
       stopPlayback();
       audio.currentTime = 0;
 
       try {
-        await audio.play();
+        // iOS requires user interaction, so we ensure play() is called directly from user action
+        const playPromise = audio.play();
+        
+        if (playPromise !== undefined) {
+          await playPromise;
+        }
+        
         setIsPlaying(true);
         const timeoutId = window.setTimeout(() => {
           audio.pause();
@@ -119,11 +135,11 @@ export const HeardleGameView = ({ door, onSolved }: HeardleGameViewProps) => {
         timeoutRef.current = timeoutId;
       } catch (error) {
         console.error("Could not play audio", error);
-        setMessage("Kunde inte spela klippet. Kontrollera att ljud är tillåtet.");
+        setMessage("Kunde inte spela klippet. På iPhone: tryck på 'Spela klippet' igen eller kontrollera att ljud är tillåtet.");
         setIsPlaying(false);
       }
     },
-    [cumulativeDurations, hasLoaded, stopPlayback]
+    [cumulativeDurations, stopPlayback]
   );
 
   useEffect(() => {
@@ -131,6 +147,31 @@ export const HeardleGameView = ({ door, onSolved }: HeardleGameViewProps) => {
       stopPlayback();
     };
   }, [stopPlayback]);
+
+  // Ensure audio loads properly on iOS
+  useEffect(() => {
+    if (audioRef.current && audioSrc) {
+      const audio = audioRef.current;
+      
+      // Force load on iOS
+      const handleLoad = () => {
+        setHasLoaded(true);
+      };
+      
+      audio.addEventListener('canplaythrough', handleLoad);
+      audio.addEventListener('loadeddata', handleLoad);
+      
+      // Try to load the audio
+      if (audio.readyState === 0) {
+        audio.load();
+      }
+      
+      return () => {
+        audio.removeEventListener('canplaythrough', handleLoad);
+        audio.removeEventListener('loadeddata', handleLoad);
+      };
+    }
+  }, [audioSrc]);
 
   if (!config) {
     return null;
@@ -227,10 +268,19 @@ export const HeardleGameView = ({ door, onSolved }: HeardleGameViewProps) => {
               <audio
                 ref={audioRef}
                 preload="auto"
+                playsInline
+                controls={false}
                 onCanPlay={() => setHasLoaded(true)}
+                onLoadedData={() => setHasLoaded(true)}
                 onPause={() => setIsPlaying(false)}
+                onError={(e) => {
+                  console.error("Audio error:", e);
+                  setMessage("Kunde inte ladda ljudfilen. Försök igen.");
+                }}
               >
                 <source src={audioSrc} type="audio/mp4" />
+                <source src={audioSrc} type="audio/mpeg" />
+                Din webbläsare stödjer inte ljuduppspelning.
               </audio>
 
               <div className="text-sm uppercase tracking-[0.3em] text-[#ffe89c]/80">

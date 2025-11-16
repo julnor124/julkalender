@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -86,5 +86,5 @@ body {
 
 /* Optional festive font utility */
 .font-festive {
-  font-family: "Mountains of Christmas", cursive;
+  font-family: "Crimson Text", serif;
 }
