@@ -245,18 +245,19 @@ label[style*="width"] input[type="text"] {
   display: block;
   margin: 0 auto;
   max-width: 500px;
-  transform: scale(0.5);
+  animation: santaShake 0.3s ease-in-out infinite;
+  will-change: transform;
 }
 
 @media (min-width: 768px) {
   .santaclaus {
-    transform: scale(0.6);
+    animation: santaShakeTablet 0.3s ease-in-out infinite;
   }
 }
 
 @media (min-width: 1024px) {
   .santaclaus {
-    transform: scale(0.7);
+    animation: santaShakeDesktop 0.3s ease-in-out infinite;
   }
 }
 
@@ -456,6 +457,52 @@ label[style*="width"] input[type="text"] {
   }
   100% {
     transform: translateX(calc(100vw + 400px));
+  }
+}
+
+/* Santa shaking/moving animation */
+@keyframes santaShake {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg) scale(0.5);
+  }
+  25% {
+    transform: translateY(-3px) rotate(-1deg) scale(0.5);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg) scale(0.5);
+  }
+  75% {
+    transform: translateY(3px) rotate(1deg) scale(0.5);
+  }
+}
+
+@keyframes santaShakeTablet {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg) scale(0.6);
+  }
+  25% {
+    transform: translateY(-3px) rotate(-1deg) scale(0.6);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg) scale(0.6);
+  }
+  75% {
+    transform: translateY(3px) rotate(1deg) scale(0.6);
+  }
+}
+
+@keyframes santaShakeDesktop {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg) scale(0.7);
+  }
+  25% {
+    transform: translateY(-3px) rotate(-1deg) scale(0.7);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg) scale(0.7);
+  }
+  75% {
+    transform: translateY(3px) rotate(1deg) scale(0.7);
   }
 }
 
