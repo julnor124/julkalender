@@ -644,7 +644,7 @@ export const doorData: DoorModel[] = [
   },
   {
     id: 23,
-    title: "Julafton",
+    title: "ANOTHER ONE",
     description:
       "Vi tar en sista wordle va hihihi",
     password: "viärnära",
