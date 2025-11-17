@@ -139,8 +139,8 @@ const MusicVideoGuessGameView = ({ door, onSolved }: MusicVideoGuessGameViewProp
                     setGalleryIndex((prev) => Math.max(0, prev - 1))
                   }
                   disabled={galleryIndex === 0}
-                  className="rounded-full border border-[#ffe89c]/40 px-3 py-1 disabled:cursor-not-allowed disabled:opacity-40"
-                >
+                  className="rounded-full bg-[#ffe89c] px-6 py-3 text-base font-semibold uppercase tracking-wide text-[#1b0f3d] transition hover:bg-[#ffd45c] disabled:cursor-not-allowed disabled:opacity-60"
+                  >
                   ← Föregående bild
                 </button>
                 <span>
@@ -154,8 +154,8 @@ const MusicVideoGuessGameView = ({ door, onSolved }: MusicVideoGuessGameViewProp
                     )
                   }
                   disabled={galleryIndex >= maxVisibleIndex}
-                  className="rounded-full border border-[#ffe89c]/40 px-3 py-1 disabled:cursor-not-allowed disabled:opacity-40"
-                >
+                  className="rounded-full bg-[#ffe89c] px-6 py-3 text-base font-semibold uppercase tracking-wide text-[#1b0f3d] transition hover:bg-[#ffd45c] disabled:cursor-not-allowed disabled:opacity-60"
+                  >
                   Nästa bild →
                 </button>
               </div>
