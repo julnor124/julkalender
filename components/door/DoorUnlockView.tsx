@@ -16,6 +16,42 @@ export const DoorUnlockView: FC<DoorUnlockViewProps> = ({ door }) => {
     <div className="min-h-screen bg-gradient-to-b from-[#1a1240] to-[#3c1db4] text-[#fdf7f7] font-festive relative">
       <div className="snow" />
 
+      {/* 🦌 Animated Reindeer flying at the top */}
+      <div className="reindeer-container">
+        <div className="reindeer-wrapper">
+          <div className="reindeer">
+            <div className="face">
+              <div className="antlerl">
+                <div className="a1"></div>
+                <div className="a2"></div>
+                <div className="a3"></div>
+              </div>
+              <div className="antlerr">
+                <div className="a1"></div>
+                <div className="a2"></div>
+                <div className="a3"></div>
+              </div>
+              <div className="eyel">
+                <div className="eyeball"></div>
+              </div>
+              <div className="eyer">
+                <div className="eyeball"></div>
+              </div>
+              <div className="earl"></div>
+              <div className="earr"></div>
+              <div className="nose"></div>
+              <div className="hat">
+                <div className="top"></div>
+                <div className="bottom"></div>
+              </div>
+            </div>
+            <div className="legl"></div>
+            <div className="legr"></div>
+            <div className="body"></div>
+          </div>
+        </div>
+      </div>
+
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-8">
         <div className="max-w-2xl w-full text-center">
           <h1

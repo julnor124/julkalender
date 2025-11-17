@@ -75,6 +75,36 @@ export default function AdventTreePage() {
           </section>
         </div>
       </div>
+
+      {/* 🎅 Animated Santa Claus at the bottom */}
+      <div className="santa-container">
+        <ul className="santa-wrapper">
+          <li className="hohoho">
+            <h2></h2>
+            <h2></h2>
+            <h2></h2>
+          </li>
+          <li className="santaclaus">
+            <div className="chapeu">
+              <div className="cone-2"></div>
+              <div className="cone-1"></div>
+            </div>
+            <div className="face">
+              <div className="eyes"></div>
+              <div className="nariz"></div>
+              <div className="barba">
+                <div className="boca"></div>
+              </div>
+            </div>
+            <div className="orelhas"></div>
+          </li>
+          <li className="hohoho">
+            <h2></h2>
+            <h2></h2>
+            <h2></h2>
+          </li>
+        </ul>
+      </div>
     </main>
   );
 }
