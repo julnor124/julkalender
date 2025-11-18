@@ -244,7 +244,7 @@ export const doorData: DoorModel[] = [
     id: 9,
     title: "LUCKA 9: Gissa serien",
     description:
-      "Kan ni lista ut vilken serie det är utifrån flera bilder?",
+      "Kan ni lista ut vilken serie det är utifrån bilder? För varje gissning kommer en ny bild att dyka upp. Du måste skriva en gissning för att få nästa bild.",
     password: "ojoj",
     gameSlug: "gissa-serien",
     gameType: "musicvideo",
@@ -475,7 +475,7 @@ export const doorData: DoorModel[] = [
     id: 17,
     title: "LUCKA 17: Gissa musikvideon",
     description:
-      "Kan ni lista ut vilken ikonisk musikvideo det är utifrån sex bilder?",
+      "Kan ni lista ut vilken ikonisk musikvideo det är? För varje gissning kommer en ny bild att dyka upp. Du måste skriva en gissning för att få nästa bild.",
     password: "mat",
     gameSlug: "gissa-musikvideon",
     gameType: "musicvideo",
