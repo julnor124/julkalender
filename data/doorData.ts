@@ -6,7 +6,7 @@ export const doorData: DoorModel[] = [
     title: "WORDLE",
     description:
       "Välkommen till julkalendern, tänk att jag löste en i år igen!",
-    password: "välkomna",
+    password: "jagkaninteförståattjagpalladeiårigen",
     gameSlug: "wordle",
     gameType: "wordle",
     wordleConfig: {
