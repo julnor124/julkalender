@@ -344,10 +344,10 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
                 </h3>
                 <div className="space-y-3 text-[#fdf7f7]/90">
                   <p>
-                    Jo, du ska hitta grupper av fyra. Alla dessa ord du ser på skärmen har en grupp de tillhör och din uppgift är att hitta alla grupper. Ifall du är en ifrån kommer en ruta poppa upp och säga "One Away". T.ex. hade "Stockholm, Paris, Madrid och Amsterdam" varit med hade dessa varit i gruppen "Huvudstäder i Europa".
+                    Jo, du ska hitta grupper av fyra. Alla dessa ord du ser på skärmen har en grupp de tillhör och din uppgift är att hitta alla grupper. Ifall du är en ifrån kommer en ruta poppa upp och säga &quot;One Away&quot;. T.ex. hade &quot;Stockholm, Paris, Madrid och Amsterdam&quot; varit med hade dessa varit i gruppen &quot;Huvudstäder i Europa&quot;.
                   </p>
                   <p>
-                    Annat exempel: "Miley Cyrus, Justin Bieber, Ariana Grande, Zara Larsson" hade kunnat vara i gruppen "Artister födda på 90-talet"
+                    Annat exempel: &quot;Miley Cyrus, Justin Bieber, Ariana Grande, Zara Larsson&quot; hade kunnat vara i gruppen &quot;Artister födda på 90-talet&quot;
                   </p>
                   <p>
                     Så det gäller att tänka till och ibland tänka utanför boxen (tryck på HÄR igen för att stänga detta fönster). Lycka till⭐️
