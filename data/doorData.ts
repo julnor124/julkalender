@@ -116,7 +116,7 @@ export const doorData: DoorModel[] = [
     id: 4,
     title: "LUCKA 4: Connections",
     description:
-      "Hitta fyra grupper med fyra ord vardera. (håll koll längst ner på skärmen, där står det om du är one away",
+      "Hitta fyra grupper med fyra ord vardera. För bättre förklaring tryck HÄR",
     password: "tjena",
     gameSlug: "connections",
     gameType: "connections",
@@ -415,7 +415,7 @@ export const doorData: DoorModel[] = [
     id: 15,
     title: "LUCKA 15: Musikconnections",
     description:
-      "Hitta grupper av fyra, idag är det musiktema! (håll koll längst ner på skärmen, där står det om du är one away)",
+      "Hitta fyra grupper med fyra ord vardera. För bättre förklaring tryck HÄR",
     password: "musik",
     gameSlug: "musikconnections",
     gameType: "connections",

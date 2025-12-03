@@ -7,9 +7,15 @@ interface PopupMessageProps {
   text: string;
   duration?: number;
   onClose?: () => void;
+  requireDismiss?: boolean; // Om true, måste användaren klicka för att stänga
 }
 
-const PopupMessage = ({ text, duration = 7000, onClose }: PopupMessageProps) => {
+const PopupMessage = ({
+  text,
+  duration = 7000,
+  onClose,
+  requireDismiss = false,
+}: PopupMessageProps) => {
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
 
   // Skapa / hämta root-elementet på klienten
@@ -26,25 +32,82 @@ const PopupMessage = ({ text, duration = 7000, onClose }: PopupMessageProps) => 
     setPortalTarget(root);
   }, []);
 
-  // Auto-stäng popup efter duration
+  // Auto-stäng popup efter duration (endast om requireDismiss är false)
   useEffect(() => {
-    if (!text) return;
+    if (!text || requireDismiss) return;
+    if (duration === undefined || duration <= 0) return;
 
     const timer = window.setTimeout(() => {
       onClose?.();
     }, duration);
 
     return () => window.clearTimeout(timer);
-  }, [text, duration, onClose]);
+  }, [text, duration, onClose, requireDismiss]);
+
+  const handleClose = () => {
+    onClose?.();
+  };
 
   if (!text || !portalTarget) {
     return null;
   }
 
   return createPortal(
-    <div className="pointer-events-none fixed inset-0 z-[999] flex items-center justify-center px-4">
-      <div className="rounded-3xl border border-[#ffe89c]/80 bg-[#06031a]/95 px-8 py-10 text-center text-2xl font-semibold text-[#ffe89c] shadow-[0_35px_70px_rgba(6,3,26,0.65)] animate-connections-fade-out">
-        {text}
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 999,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        pointerEvents: requireDismiss ? "auto" : "none",
+        backgroundColor: requireDismiss ? "rgba(0,0,0,0.6)" : "transparent",
+        backdropFilter: requireDismiss ? "blur(4px)" : "none",
+      }}
+    >
+      <div
+        style={{
+          position: "relative",
+          pointerEvents: "auto",
+          backgroundColor: "#ffffff",
+          borderRadius: 16,
+          padding: "24px 32px",
+          maxWidth: 480,
+          width: "90%",
+          boxShadow: "0 20px 40px rgba(0,0,0,0.35)",
+          textAlign: "center",
+        }}
+      >
+        {requireDismiss && (
+          <button
+            onClick={handleClose}
+            aria-label="Stäng"
+            style={{
+              position: "absolute",
+              top: 12,
+              right: 16,
+              border: "none",
+              background: "transparent",
+              fontSize: 20,
+              cursor: "pointer",
+              color: "#555",
+            }}
+          >
+            ×
+          </button>
+        )}
+
+        <p
+          style={{
+            margin: 0,
+            fontSize: 18,
+            lineHeight: 1.4,
+            color: "#222",
+          }}
+        >
+          {text}
+        </p>
       </div>
     </div>,
     portalTarget

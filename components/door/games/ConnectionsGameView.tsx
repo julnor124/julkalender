@@ -113,6 +113,8 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
   );
   const [remainingErrors, setRemainingErrors] = useState<number>(MAX_ERRORS);
   const [shakeSelection, setShakeSelection] = useState(false);
+  const [guessedCombinations, setGuessedCombinations] = useState<Set<string>>(new Set());
+  const [showExplanation, setShowExplanation] = useState(false);
 
   useEffect(() => {
     setAvailableWords(shuffleWords(baseWords));
@@ -123,6 +125,8 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
     setHintMessage(null);
     setRemainingErrors(MAX_ERRORS);
     setShakeSelection(false);
+    setGuessedCombinations(new Set());
+    setShowExplanation(false);
   }, [baseWords, shuffleWords]);
 
   const handleWordClick = (word: string) => {
@@ -162,6 +166,17 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
       return;
     }
 
+    // Skapa en unik nyckel för denna kombination av ord (sorterad för att ignorera ordning)
+    const combinationKey = [...selectedWords].sort().join("|");
+
+    // Kolla om denna kombination redan gissats på
+    if (guessedCombinations.has(combinationKey)) {
+      setHintMessage({ id: Date.now(), text: "Redan gissat" });
+      setMessage("Redan gissat");
+      setMessageTone("error");
+      return;
+    }
+
     // Räkna hur många av de valda orden som tillhör varje grupp
     const counts = puzzleGroups.map((group) => {
       const count = selectedWords.filter((word) =>
@@ -181,13 +196,22 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
       setSelectedWords([]);
       setMessage(`Rätt! Grupp: ${matched.group.title}`);
       setMessageTone("status");
+      // Ta bort från guessedCombinations eftersom den är löst
+      setGuessedCombinations((prev) => {
+        const next = new Set(prev);
+        next.delete(combinationKey);
+        return next;
+      });
 
       if (solvedGroups.length + 1 === puzzleGroups.length) {
-        setMessage("Du löste alla grupper! 🎉");
+        setMessage("GRATTIIIIIS! Du löste alla grupper! 🎉");
         setMessageTone("status");
       }
       return;
     }
+
+    // Spara denna kombination som gissad
+    setGuessedCombinations((prev) => new Set(prev).add(combinationKey));
 
     // ONE AWAY: minst en grupp har exakt 3 av de 4 valda
     const almost = counts.filter(({ count }) => count === 3);
@@ -298,8 +322,39 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
               {door.title}
             </h1>
             <p className="mt-3 text-base md:text-lg text-[#F9DADA]/80 max-w-3xl mx-auto">
-              {door.description}
+              {door.description?.split("HÄR").map((part, index, array) => (
+                <span key={index}>
+                  {part}
+                  {index < array.length - 1 && (
+                    <button
+                      onClick={() => setShowExplanation(!showExplanation)}
+                      className="text-[#877ad1] hover:text-[#a89ae8] underline font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#877ad1] rounded"
+                      aria-label="Visa förklaring"
+                    >
+                      HÄR
+                    </button>
+                  )}
+                </span>
+              ))}
             </p>
+            {showExplanation && (
+              <div className="mt-6 max-w-3xl mx-auto rounded-2xl border border-[#ffe89c]/40 bg-[#22114b]/70 px-6 py-5 text-left text-sm text-[#fdf7f7] shadow-[0_16px_36px_rgba(15,10,50,0.35)]">
+                <h3 className="text-lg font-semibold text-[#ffe89c] mb-3">
+                  Hur spelas connection?
+                </h3>
+                <div className="space-y-3 text-[#fdf7f7]/90">
+                  <p>
+                    Jo, du ska hitta grupper av fyra. Alla dessa ord du ser på skärmen har en grupp de tillhör och din uppgift är att hitta alla grupper. Ifall du är en ifrån kommer en ruta poppa upp och säga "One Away". T.ex. hade "Stockholm, Paris, Madrid och Amsterdam" varit med hade dessa varit i gruppen "Huvudstäder i Europa".
+                  </p>
+                  <p>
+                    Annat exempel: "Miley Cyrus, Justin Bieber, Ariana Grande, Zara Larsson" hade kunnat vara i gruppen "Artister födda på 90-talet"
+                  </p>
+                  <p>
+                    Så det gäller att tänka till och ibland tänka utanför boxen (tryck på HÄR igen för att stänga detta fönster). Lycka till⭐️
+                  </p>
+                </div>
+              </div>
+            )}
           </header>
 
           <section className="flex w-full flex-col items-center gap-10">
@@ -421,7 +476,7 @@ export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
           key={hintMessage.id}
           text={hintMessage.text}
           onClose={() => setHintMessage(null)}
-          duration={3000}
+          requireDismiss={true}
         />
       )}
     </>
