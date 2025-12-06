@@ -221,9 +221,9 @@ export const doorData: DoorModel[] = [
     gameType: "rebus",
     rebusConfig: {
       prompt:
-        "1️⃣ + 🕯️ + ✝️ + 🕯️ + 🌅",
-      solution: "Första advent",
-      acceptedAnswers: ["Första advent", "Forsta advent", "1:a advent", "Först advent"],
+        "🕯️ 🕯️+ ✝️ + 🌅",
+      solution: "Andra advent",
+      acceptedAnswers: ["Andra advent", "2:a advent","2a advent"],
     },
   },
   {
