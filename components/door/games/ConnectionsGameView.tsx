@@ -55,17 +55,17 @@ const DEFAULT_GROUPS: DoorConnectionsGroup[] = [
   },
   {
     id: "debutSingles",
-    title: "Debutsinglar av stora artister",
+    title: "Sånger med vattenreferenser.",
     description:
-      "...Baby One More Time (Britney Spears) · Ocean Eyes (Billie Eilish) · One Time (Justin Bieber) · Blinded by the Light (Bruce Springsteen)",
-    words: ["...Baby One More Time", "Ocean Eyes", "One Time", "Blinded by the Light"],
+      "Smoke on the Water (Deep Purple) · Ocean Eyes (Billie Eilish) · Down by the River (Bob Dylan) · Sol, vind och vatten (Ted Gärdestad)",
+    words: ["Smoke on the Water", "Ocean Eyes", "Down by the River", "Sol, vind och vatten"],
   },
   {
     id: "eurovisionWinners",
     title: "Eurovisionvinnare",
     description:
-      "Arcade (Nederländerna 2019) · Wild Dances (Ukraina 2004) · Ne partez pas sans moi (Schweiz 1988) · What's Another Year (Irland 1980)",
-    words: ["Arcade", "Wild Dances", "Ne partez pas sans moi", "What's Another Year"],
+      "Euphoria (Sverige 2012) · Wild Dances (Ukraina 2004) · Ne partez pas sans moi (Schweiz 1988) · What's Another Year (Irland 1980)",
+    words: ["Euphoria", "Wild Dances", "Ne partez pas sans moi", "What's Another Year"],
   },
 ];
 
@@ -76,14 +76,13 @@ interface ConnectionsGameViewProps {
 }
 
 export const ConnectionsGameView = ({ door }: ConnectionsGameViewProps) => {
-  const groupsFromDoor = door.connectionsConfig?.groups ?? [];
-
   const puzzleGroups = useMemo<DoorConnectionsGroup[]>(() => {
+    const groupsFromDoor = door.connectionsConfig?.groups ?? [];
     if (groupsFromDoor.length > 0) {
       return groupsFromDoor;
     }
     return DEFAULT_GROUPS;
-  }, [groupsFromDoor]);
+  }, [door.connectionsConfig?.groups]);
 
   const baseWords = useMemo<WordState[]>(() => {
     return puzzleGroups.flatMap((group) =>
